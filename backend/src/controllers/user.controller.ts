@@ -19,15 +19,14 @@ const createAdmin = async (): Promise<void> => {
     const phoneNumber = process.env.ADMIN_PHONE
       ? Number(process.env.ADMIN_PHONE)
       : undefined;
-      const createUser = await User.create({
-        name: process.env.ADMIN_NAME,
+    const createUser = await User.create({
+      name: process.env.ADMIN_NAME,
       password: hashPassword,
       email: process.env.ADMIN_EMAIL,
       phone: phoneNumber,
     });
-    console.log("Admin created");
   } catch (error: any) {
-    console.log(`error to created admin ${error.message}`);
+    throw new Error("Error to created admin")
   }
 };
 const loginAdmin = async (req: Request, res: Response): Promise<void> => {
@@ -56,19 +55,17 @@ const loginAdmin = async (req: Request, res: Response): Promise<void> => {
       } as IResponse);
       return;
     }
-    const token = generateToken(findUser._id.toString())
-    res.cookie("token",token,{
-      httpOnly:true,
-      secure:process.env.NODE_ENV === "production",
-      sameSite:"strict",
-      maxAge:7*24*60*60*1000
-    })
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: `Welcome Back ${findUser.name}`,
-      } as IResponse);
+    const token = generateToken(findUser._id.toString());
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res.status(200).json({
+      success: true,
+      message: `Welcome Back ${findUser.name}`,
+    } as IResponse);
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -78,6 +75,24 @@ const loginAdmin = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const logoutAdmin = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite:"strict"
+    });
+    res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    } as IResponse);
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: "logout Error",
+      error: error.message,
+    } as IResponse);
+  }
+};
 
-
-export { createAdmin, loginAdmin };
+export { createAdmin, loginAdmin, logoutAdmin };

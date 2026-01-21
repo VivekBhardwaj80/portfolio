@@ -23,9 +23,9 @@ const startServer = async () => {
   try {
     await connectDB();
     await createAdmin();
-    app.listen(port, () => console.log(`Server running on port ${port}`));
+    app.listen(port);
   } catch (error) {
-    console.error("Server startup failed:", error);
+    throw new Error("Server startup failed:");
   }
 };
 

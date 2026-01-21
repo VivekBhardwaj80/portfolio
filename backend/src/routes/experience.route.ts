@@ -10,11 +10,11 @@ import {
 import isAuth from "../middlewares/isAuth.js";
 
 const experienceRouter = Router();
-experienceRouter.post("/add", isAuth, addExperience);
-experienceRouter.get("/all-experience", getAllExperience);
-experienceRouter.get("/single-experience/:id", getASingleExperience);
-experienceRouter.delete("/delete/:id", isAuth, deleteSingleExperience);
-experienceRouter.delete("/delete-all", isAuth, deleteAllExperience);
-experienceRouter.put("/update/:id", isAuth, updateExperience);
+experienceRouter.post("/", isAuth, addExperience);
+experienceRouter.get("/", getAllExperience);
+experienceRouter.get("/:id", getASingleExperience);
+experienceRouter.put("/:id", isAuth, updateExperience);
+experienceRouter.delete("/:id", isAuth, deleteSingleExperience);
+experienceRouter.delete("/", isAuth, deleteAllExperience);
 
 export default experienceRouter;

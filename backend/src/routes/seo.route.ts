@@ -10,10 +10,10 @@ import isAuth from "../middlewares/isAuth.js";
 import upload from "../middlewares/multer.js";
 
 const seoRouter = Router();
-seoRouter.post("/create", isAuth, upload.single("image"), createSeo);
-seoRouter.get("/all-seo", getAllSeo);
-seoRouter.get("/single-seo/", getASingleSeo);
-seoRouter.delete("/delete", isAuth, deleteSingleSeo);
-seoRouter.put("/update", isAuth, updateSeoPage);
+seoRouter.post("/", isAuth, upload.single("image"), createSeo);
+seoRouter.get("/", getAllSeo);
+seoRouter.get("/single/", getASingleSeo);
+seoRouter.delete("/", isAuth, deleteSingleSeo);
+seoRouter.put("/", isAuth, updateSeoPage);
 
 export default seoRouter;

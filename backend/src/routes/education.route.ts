@@ -10,11 +10,11 @@ import {
 import isAuth from "../middlewares/isAuth.js";
 
 const educationRouter = Router();
-educationRouter.post("/add", isAuth, addEducation);
-educationRouter.get("/all-education", getAllEducation);
-educationRouter.get("/single-education/:id", getASingleEducation);
-educationRouter.delete("/delete/:id", isAuth, deleteSingleEducation);
-educationRouter.delete("/delete-all", isAuth, deleteAllEducation);
-educationRouter.put("/update/:id", isAuth, updateEducation);
+educationRouter.post("/", isAuth, addEducation);
+educationRouter.get("/", getAllEducation);
+educationRouter.get("/:id", getASingleEducation);
+educationRouter.put("/:id", isAuth, updateEducation);
+educationRouter.delete("/:id", isAuth, deleteSingleEducation);
+educationRouter.delete("/", isAuth, deleteAllEducation);
 
 export default educationRouter;

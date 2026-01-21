@@ -10,11 +10,11 @@ import {
 import isAuth from "../middlewares/isAuth.js";
 
 const feedbackRouter = Router();
-feedbackRouter.post("/submit", submitFeedback);
-feedbackRouter.get("/all-feedback", isAuth, getAllFeedback);
-feedbackRouter.get("/single-feedback/:id", isAuth, getASingleFeedback);
-feedbackRouter.delete("/delete/:id", isAuth, deleteSingleFeedback);
-feedbackRouter.delete("/delete-all", isAuth, deleteAllFeedback);
-feedbackRouter.patch("/read/:id",isAuth, markFeedbackRead);
+feedbackRouter.post("/", submitFeedback);
+feedbackRouter.get("/", isAuth, getAllFeedback);
+feedbackRouter.get("/:id", isAuth, getASingleFeedback);
+feedbackRouter.patch("/:id",isAuth, markFeedbackRead);
+feedbackRouter.delete("/:id", isAuth, deleteSingleFeedback);
+feedbackRouter.delete("/", isAuth, deleteAllFeedback);
 
 export default feedbackRouter;

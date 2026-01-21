@@ -11,11 +11,11 @@ import upload from "../middlewares/multer.js";
 import isAuth from "../middlewares/isAuth.js";
 
 const projectRouter = Router();
-projectRouter.post("/add", isAuth, upload.single("image"), addProject);
-projectRouter.get("/all-projects", getAllProjects);
-projectRouter.get("/single-project/:id", getASingleProject);
-projectRouter.delete("/delete/:id", isAuth, deleteSingleProject);
-projectRouter.delete("/delete-all", isAuth, deleteAllProjects);
-projectRouter.put("/update/:id", isAuth, upload.single("image"), updateProject);
+projectRouter.post("/", isAuth, upload.single("image"), addProject);
+projectRouter.get("/", getAllProjects);
+projectRouter.get("/:id", getASingleProject);
+projectRouter.put("/:id", isAuth, upload.single("image"), updateProject);
+projectRouter.delete("/:id", isAuth, deleteSingleProject);
+projectRouter.delete("/", isAuth, deleteAllProjects);
 
 export default projectRouter;

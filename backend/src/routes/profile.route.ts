@@ -9,9 +9,9 @@ import upload from "../middlewares/multer.js";
 import isAuth from "../middlewares/isAuth.js";
 
 const profileRouter = Router();
-profileRouter.post("/add", isAuth, upload.single("image"), addProfile);
-profileRouter.get("/profile", getProfile);
-profileRouter.delete("/delete", isAuth, deleteProfile);
-profileRouter.patch("/update",isAuth, upload.single("image"), updateProfile);
+profileRouter.post("/", isAuth, upload.single("image"), addProfile);
+profileRouter.get("/", getProfile);
+profileRouter.patch("/",isAuth, upload.single("image"), updateProfile);
+profileRouter.delete("/", isAuth, deleteProfile);
 
 export default profileRouter;

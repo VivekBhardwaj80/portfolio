@@ -10,11 +10,11 @@ import {
 import isAuth from "../middlewares/isAuth.js";
 
 const skillRouter = Router();
-skillRouter.post("/add", isAuth, addSkill);
-skillRouter.get("/all-skills", getAllSkill);
-skillRouter.get("/single-skill/:id", getASingleSkill);
-skillRouter.delete("/delete/:id", isAuth, deleteSingleSkill);
-skillRouter.delete("/delete-all",isAuth, deleteAllSkill);
-skillRouter.put("/update/:id", isAuth, updateSkill);
+skillRouter.post("/", isAuth, addSkill);
+skillRouter.get("/", getAllSkill);
+skillRouter.get("/:id", getASingleSkill);
+skillRouter.put("/:id", isAuth, updateSkill);
+skillRouter.delete("/:id", isAuth, deleteSingleSkill);
+skillRouter.delete("/",isAuth, deleteAllSkill);
 
 export default skillRouter;
