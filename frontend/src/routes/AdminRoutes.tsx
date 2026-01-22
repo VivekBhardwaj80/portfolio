@@ -10,7 +10,9 @@ import Experience from "../pages/admin/Experience";
 import Skills from "../pages/admin/Skills";
 import Projects from "../pages/admin/Projects";
 import Feedback from "../pages/admin/Feedback";
-import {ToastContainer  } from 'react-toastify'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const AdminRoutes = () => {
   return (
     <div>
@@ -18,20 +20,22 @@ const AdminRoutes = () => {
       <Routes>
         <Route path="/admin/login" element={<Login />} />
         <Route
+          path="/admin/*"
           element={
             <ProtectedRoutes>
               <AdminLayout />
             </ProtectedRoutes>
           }
         >
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/profile" element={<Profile />} />
-          <Route path="/admin/seo" element={<Seo />} />
-          <Route path="/admin/education" element={<Education />} />
-          <Route path="/admin/experience" element={<Experience />} />
-          <Route path="/admin/skills" element={<Skills />} />
-          <Route path="/admin/projects" element={<Projects />} />
-          <Route path="/admin/feedback" element={<Feedback />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="seo" element={<Seo />} />
+          <Route path="education" element={<Education />} />
+          <Route path="experience" element={<Experience />} />
+          <Route path="skills" element={<Skills />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="feedback" element={<Feedback />} />
+          <Route index element={<Dashboard />} />
         </Route>
       </Routes>
     </div>

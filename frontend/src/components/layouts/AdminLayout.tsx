@@ -7,16 +7,19 @@ const AdminLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar - Hidden on mobile, shown on md and up */}
       <AdminSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
-      {/* Topbar + Content */}
-      <div className="lg:pl-64">
+      {/* Main Content */}
+      <div className="flex-1 md:ml-64 transition-all duration-300">
+        {/* Topbar */}
         <AdminTopbar setIsOpen={setIsOpen} />
 
-        <div className="p-5">
+        {/* Page Content */}
+        <main className="p-4 md:p-6">
           <Outlet />
-        </div>
+        </main>
       </div>
     </div>
   );

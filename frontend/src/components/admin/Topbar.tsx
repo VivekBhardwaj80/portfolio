@@ -1,5 +1,8 @@
-// import { useState } from "react";
-import { BellIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import {
+  BellIcon,
+  UserCircleIcon,
+  Bars3Icon,
+} from "@heroicons/react/24/outline";
 
 type TopbarProps = {
   setIsOpen: (val: boolean) => void;
@@ -7,19 +10,30 @@ type TopbarProps = {
 
 const AdminTopbar = ({ setIsOpen }: TopbarProps) => {
   return (
-    <div className="flex items-center justify-between p-4 bg-white shadow">
+    <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-3 bg-white shadow-md md:px-6">
+      {/* Mobile menu button - only visible on small screens */}
       <button
-        className="lg:hidden"
         onClick={() => setIsOpen(true)}
+        className="p-2 rounded-md text-gray-600 hover:bg-gray-100 md:hidden"
       >
-        <span className="text-xl">☰</span>
+        <Bars3Icon className="h-6 w-6" />
       </button>
 
+      {/* Spacer for alignment on mobile */}
+      <div className="md:hidden flex-1" />
+
+      {/* Right side icons */}
       <div className="flex items-center gap-4">
-        <BellIcon className="h-6 w-6 text-gray-600" />
-        <div className="flex items-center gap-2">
+        <button className="relative p-2 rounded-full hover:bg-gray-100">
+          <BellIcon className="h-5 w-5 text-gray-600" />
+          <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+        </button>
+
+        <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
           <UserCircleIcon className="h-8 w-8 text-gray-600" />
-          <span className="font-semibold">Admin</span>
+          <div className="hidden md:block">
+            <span className="font-medium text-gray-800">Admin</span>
+          </div>
         </div>
       </div>
     </div>

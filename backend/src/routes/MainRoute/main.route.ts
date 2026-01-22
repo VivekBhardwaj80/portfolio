@@ -7,9 +7,12 @@ import educationRouter from '../education.route.js'
 import feedbackRouter from '../feedback.route.js'
 import profileRouter from '../profile.route.js'
 import seoRouter from '../seo.route.js'
+import isAuth from '../../middlewares/isAuth.js'
+import verifyAdmin from '../../controllers/verifyAdmin.controller.js'
 
 const mainRouter = Router()
 mainRouter.use('/admin',userRouter)
+mainRouter.use('/verify',isAuth,verifyAdmin)
 mainRouter.use('/projects',projectRouter)
 mainRouter.use('/skills',skillRouter)
 mainRouter.use('/experiences',experienceRouter)

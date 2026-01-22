@@ -8,11 +8,13 @@ import { toast } from "react-toastify";
 import api from "../../services/axios";
 import { endsPoint } from "../../services/api";
 import axios from "axios";
+import {useNavigate} from 'react-router-dom'
 
 const Login = () => {
   const [isShow, setIsShow] = useState(false);
   const [email, setEmail]= useState("")
   const [password, setPassword]= useState("")
+  const navigate = useNavigate()
 
   const handleSubmit = async(e:React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault()    
@@ -22,6 +24,7 @@ const Login = () => {
         toast.success(data.message)
         setEmail('')
         setPassword('')
+        navigate("dashboard")
       }
     } catch (error:unknown) {
       if(axios.isAxiosError(error)){
