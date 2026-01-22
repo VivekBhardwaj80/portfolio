@@ -5,4 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(),tailwindcss(),],
+  server: {
+    historyApiFallback: true, // usually handled by default in Vite dev server
+  },
 })
