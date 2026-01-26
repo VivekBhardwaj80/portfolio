@@ -10,9 +10,23 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Pie,
+  PieChart,
+  Cell,
 } from "recharts";
+import type { PieLabelRenderProps } from "recharts";
 
-const data = [
+interface IPIEDATA{
+  name:string
+  values:number
+}
+
+interface IData{
+  name:string
+  sales:number
+}
+
+const data:IData[] = [
   { name: "JAN", sales: 9000 },
   { name: "FEB", sales: 1000 },
   { name: "MARCH", sales: 7000 },
@@ -20,6 +34,43 @@ const data = [
   { name: "MAY", sales: 6000 },
   { name: "JUNE", sales: 8000 },
 ];
+const PIEDATA:IPIEDATA[] = [
+  { name: "ReactJs", values: 20 },
+  { name: "NodeJs", values: 33 },
+  { name: "MongoDb", values: 20 },
+  { name: "ExpressJs", values: 28 },
+];
+const renderCustomizedLabel = (props: PieLabelRenderProps) => {
+  const {
+    cx = 0,
+    cy = 0,
+    midAngle = 0,
+    innerRadius = 0,
+    outerRadius = 0,
+    percent = 0,
+  } = props;
+
+  const RADIAN = Math.PI / 180;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central"
+      fontSize={17}
+      fontWeight="600"
+    >
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
+
+const COLORS = ["#911ceb", "#c381ec", "#e41ceb", "#1ca6eb"];
 
 const Dashboard = () => {
   return (
@@ -31,7 +82,7 @@ const Dashboard = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-6 md:gap-4 gap-3">
         {/* Total Visitors Card */}
         <div className="bg-white rounded-xl shadow p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
@@ -83,8 +134,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row w-full gap-6">
-        <div className="flex-[2] bg-white rounded-lg overflow-hidden ">
+      <div className="flex flex-col lg:flex-row w-full lg:gap-6 md:gap-4 gap-3">
+        <div className="flex-2 bg-white rounded-lg overflow-hidden flex flex-col min-h-70 ">
           <div className="flex w-full bg-[#eacbff] justify-between px-4 py-2 items-center">
             <h3 className="text-neutral-600 font-bold text-[17px] ">
               Recent Projects
@@ -93,27 +144,101 @@ const Dashboard = () => {
               View All
             </button>
           </div>
-          <div className="py-4 px-4 grid grid-cols-3 gap-6">
+          <div className="py-4 px-4 grid md:grid-cols-3 grid-cols-1 lg:gap-6 md:gap-4 gap-3 items-center  grow">
             <div className="flex flex-col items-start">
               <img
                 src="https://static.vecteezy.com/system/resources/thumbnails/001/948/855/small/flat-design-abstract-background-free-vector.jpg"
                 alt="project-image"
-                className="w-full h-[100px] object-cover"
+                className="w-full h-30 rounded-lg object-cover"
               />
-              <p className="text-semibold text-[17px] text-gray-500">
+              <p className="font-semibold mt-1 text-[17px] text-gray-500">
                 project name
               </p>
-              <button className="py-1 px-3 text-white text-center bg-indigo-400 rounded-full">
+              <button className="py-1 mt-1 px-3 font-medium text-white text-center bg-indigo-400 rounded-full">
                 project-see
               </button>
             </div>
-            <div className="bg-red-400"></div>
-            <div className="bg-red-400">a</div>
+            <div className="flex flex-col items-start">
+              <img
+                src="https://static.vecteezy.com/system/resources/thumbnails/001/948/855/small/flat-design-abstract-background-free-vector.jpg"
+                alt="project-image"
+                className="w-full h-30 rounded-lg object-cover"
+              />
+              <p className="font-semibold mt-1 text-[17px] text-gray-500">
+                project name
+              </p>
+              <button className="py-1 mt-1 px-3 font-medium text-white text-center bg-indigo-400 rounded-full">
+                project-see
+              </button>
+            </div>
+            <div className="flex flex-col items-start">
+              <img
+                src="https://static.vecteezy.com/system/resources/thumbnails/001/948/855/small/flat-design-abstract-background-free-vector.jpg"
+                alt="project-image"
+                className="w-full h-30 rounded-lg object-cover"
+              />
+              <p className="font-semibold mt-1 text-[17px] text-gray-500">
+                project name
+              </p>
+              <button className="py-1 mt-1 px-3 font-medium text-white text-center bg-indigo-400 rounded-full">
+                project-see
+              </button>
+            </div>
           </div>
         </div>
-        <div className="flex-1 bg-amber-200 rounded-lg"></div>
+        <div className="flex-1 bg-white overflow-hidden rounded-lg flex flex-col min-h-70">
+          <div className="flex w-full bg-[#eacbff] justify-between px-4 py-2 items-center">
+            <h3 className="text-neutral-600 font-bold text-[17px]">
+              Skills Distribution
+            </h3>
+            <button className="text-gray-600 text-sm px-3 py-1 bg-[#c381ec] rounded-full hover:bg-white cursor-pointer hover:font-semibold transition">
+              View All
+            </button>
+          </div>
+          <div className="grid grid-cols-4 gap-3">
+            <div className="col-span-2 flex justify-center items-center">
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={PIEDATA}
+                    dataKey="values"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={70}
+                    label={renderCustomizedLabel}
+                    labelLine={false}
+                  >
+                    {PIEDATA.map((entry, index) => (
+                      <Cell
+                        key={`cell-${entry}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="col-span-2  flex flex-col justify-center gap-2 px-2 ">
+              {PIEDATA.map((entry, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <span
+                      className="h-3 w-3 rounded-full"
+                      style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                    />
+                    <span className="text-lg font-medium">{entry.name}</span>
+                  </div>
+
+                  <span className="text-lg font-semibold">{entry.values}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="mt-3 w-full h-60 bg-white rounded-lg py-6 px-4">
+      
+      <div className="lg:mt-3 md:mt-1 w-full h-60 bg-white rounded-lg py-6 px-4">
         <h3 className="text-neutral-600 font-bold text-[17px] mb-2">
           Portfolio View
         </h3>

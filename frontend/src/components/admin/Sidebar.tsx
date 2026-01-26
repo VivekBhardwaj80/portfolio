@@ -14,7 +14,7 @@ type SidebarProps = {
   setIsOpen: (val: boolean) => void;
 };
 
-const links = [
+export const links = [
   { name: "Dashboard", icon: HomeIcon, path: "/admin/dashboard" },
   { name: "Profile", icon: UserIcon, path: "/admin/profile" },
   { name: "SEO", icon: BriefcaseIcon, path: "/admin/seo" },

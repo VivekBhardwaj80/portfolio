@@ -4,12 +4,17 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/outline";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { useLocation } from "react-router-dom";
+import { links } from "./Sidebar";
 
 type TopbarProps = {
   setIsOpen: (val: boolean) => void;
 };
 
 const AdminTopbar = ({ setIsOpen }: TopbarProps) => {
+  const location = useLocation()
+  const currentLink = links.find(link=>link.path === location.pathname)
+  const pageTitle = currentLink?currentLink.name:"Dashboard"
   return (
     <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-0.5 bg-white/10 backdrop-blur-md border-b border-white/20 md:px-6">
       {/* Mobile menu button - only visible on small screens */}
@@ -21,7 +26,8 @@ const AdminTopbar = ({ setIsOpen }: TopbarProps) => {
       </button>
 
       {/* Spacer for alignment on mobile */}
-      <div className="md:hidden flex-1" />
+      <div className="md:hidden flex" />
+      <div className="text-white font-bold text-xl">{pageTitle}</div>
 
       {/* Right side icons */}
       <div className="ml-auto flex items-center gap-3">
