@@ -1,14 +1,16 @@
-// import {BrowserRouter as Router} from 'react-router-dom'
-import AdminRoutes from "./routes/AdminRoutes"
-import PublicRoutes from "./routes/PublicRoutes"
+import { Routes, Route } from "react-router-dom";
+import PublicRoutes from "./routes/PublicRoutes";
+import AdminRoutes from "./routes/AdminRoutes";
 
-const App = () => {
+function App() {
   return (
     <>
-      <PublicRoutes />
-      <AdminRoutes />
+      <Routes>
+        <Route path="/*" element={<PublicRoutes />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

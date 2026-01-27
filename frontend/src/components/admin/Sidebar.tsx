@@ -17,7 +17,6 @@ type SidebarProps = {
 export const links = [
   { name: "Dashboard", icon: HomeIcon, path: "/admin/dashboard" },
   { name: "Profile", icon: UserIcon, path: "/admin/profile" },
-  { name: "SEO", icon: BriefcaseIcon, path: "/admin/seo" },
   { name: "Education", icon: AcademicCapIcon, path: "/admin/education" },
   { name: "Experience", icon: BriefcaseIcon, path: "/admin/experience" },
   { name: "Skills", icon: CodeBracketIcon, path: "/admin/skills" },

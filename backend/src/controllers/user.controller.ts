@@ -32,6 +32,7 @@ const createAdmin = async (): Promise<void> => {
 const loginAdmin = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
+    console.log(email,password)
     if (!email || !password) {
       res.status(400).json({
         success: false,

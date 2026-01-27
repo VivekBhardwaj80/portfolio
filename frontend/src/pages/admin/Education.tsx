@@ -4,9 +4,14 @@ import { MdModeEditOutline } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { MdDateRange } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
+import { useState } from "react";
+import AddEducation from "../../components/admin/models/AddEducation";
 
 const Education = () => {
+  const [showAdd, setShowAdd] = useState(false)
   return (
+    <>
+    {showAdd && (<AddEducation onClose={() => setShowAdd(false)} />)}
     <div className="flex flex-col gap-3">
       <div className="flex justify-between items-end ">
         <div>
@@ -18,7 +23,10 @@ const Education = () => {
           </p>
         </div>
         <div>
-          <button className="flex flex-row items-center rounded-md text-white md:px-3 md:py-1 font-semibold md:text-xl px-2 py-1 gap-1 bg-[#c12df7] cursor-pointer">
+          <button
+            className="flex flex-row items-center rounded-md text-white md:px-3 md:py-1 font-semibold md:text-xl px-2 py-1 gap-1 bg-[#c12df7] cursor-pointer"
+            onClick={() => setShowAdd(true)}
+          >
             <IoAdd size={17} />
             New
           </button>
@@ -47,7 +55,7 @@ const Education = () => {
                 </h4>
               </div>
             </div>
-            <div className="flex md: md:gap-2 gap-1 text-white">
+            <div className="flex  md:gap-2 gap-1 text-white">
               <p className="md:px-2 md:py-1 px-1 py-0.5 md:text-xl text-sm md:rounded-lg rounded-md  lg:cursor-pointer shadow-lg h-fit bg-indigo-500">
                 <MdModeEditOutline />
               </p>
@@ -77,6 +85,7 @@ const Education = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
