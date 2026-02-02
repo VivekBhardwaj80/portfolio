@@ -1,16 +1,26 @@
 import { Response, Request } from "express";
 import { IResponse } from "../interfaces/responseInterface.js";
 import Skill from "../models/skill.model.js";
+import cloudinary from "../config/cloudinary.js";
 
 const addSkill = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, level, category, icon, isFeatured } = req.body;
+    const { name, level, category, isFeatured } = req.body;
     if (!name || !level || !category) {
       res.status(400).json({
         success: false,
         message: "Name, Level, and Category is required",
       } as IResponse);
       return;
+    }
+    const featured = isFeatured === "true" || isFeatured === true
+    let skillIcon:string = ""
+    if(req.file){
+     const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}` 
+     const result = await cloudinary.uploader.upload(base64Image,{
+      folder:'skill'
+     })
+     skillIcon = result.secure_url
     }
     const existingSkill = await Skill.findOne({ name });
     if (existingSkill) {
@@ -24,8 +34,8 @@ const addSkill = async (req: Request, res: Response): Promise<void> => {
       name,
       level,
       category,
-      icon,
-      isFeatured,
+      icon:skillIcon?skillIcon : '',
+      isFeatured:featured
     });
     res
       .status(201)
@@ -35,6 +45,7 @@ const addSkill = async (req: Request, res: Response): Promise<void> => {
         data: skill,
       } as IResponse);
   } catch (error: any) {
+    console.log(error.message)
     res
       .status(500)
       .json({
@@ -119,6 +130,7 @@ const deleteSingleSkill = async (
     }
     res.status(200).json({success:true,message:`delete ${deleteSkill?.name} successfully`}as IResponse)
   } catch (error: any) {
+    console.log(error.message)
     res
       .status(500)
       .json({

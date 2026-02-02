@@ -51,7 +51,7 @@ const Home = ({ darkMode, toggleDarkMode }: PublicRoutesProps) => {
         className={
           darkMode
             ? "bg-linear-to-br from-gray-900 via-[#0d182e] to-gray-900 min-h-screen "
-            : "bg-linear-to-br from-cyan-500 to-blue-100 min-h-screen rounded-md"
+            : "bg-linear-to-br from-blue-100 to-cyan-500 min-h-screen rounded-md"
         }
       >
         <section id="home" className="min-h-screen">
@@ -64,10 +64,10 @@ const Home = ({ darkMode, toggleDarkMode }: PublicRoutesProps) => {
           <Skills darkMode={darkMode}/>
         </section>
         <section id="project" className="min-h-screen">
-          <Projects />
+          <Projects darkMode={darkMode}/>
         </section>
         <section id="contact" className="min-h-screen">
-          <Contact />
+          <Contact darkMode={darkMode}/>
         </section>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { IResponse } from "../interfaces/responseInterface.js";
 import Experience from "../models/experience.model.js";
+import cloudinary from "../config/cloudinary.js";
 
 const addExperience = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -12,7 +13,13 @@ const addExperience = async (req: Request, res: Response): Promise<void> => {
       endDate,
       description,
       isCurrent,
-    } = req.body;
+      working,
+    } = req.body;  
+let { technologies } = req.body;
+if (typeof technologies === "string") {
+  technologies = technologies.split(",").map((t) => t.trim());
+}
+
     if (!company || !role || !startDate) {
       res.status(400).json({
         success: false,
@@ -20,12 +27,20 @@ const addExperience = async (req: Request, res: Response): Promise<void> => {
       } as IResponse);
       return;
     }
-    if(!isCurrent && !endDate){
-        res.status(400).json({
+    if (!isCurrent && !endDate) {
+      res.status(400).json({
         success: false,
         message: "EndDate is required when isCurrent is false",
       } as IResponse);
       return;
+    }
+    let logo: string = "";
+    if (req.file) {
+      const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+      const result = await cloudinary.uploader.upload(base64Image, {
+        folder: "experience",
+      });
+      logo = result.secure_url;
     }
     const existingExperience = await Experience.findOne({ company });
     if (existingExperience) {
@@ -43,6 +58,9 @@ const addExperience = async (req: Request, res: Response): Promise<void> => {
       location,
       description,
       isCurrent,
+      logo,
+      technologies,
+      working
     });
     res.status(201).json({
       success: true,
@@ -128,12 +146,10 @@ const deleteSingleExperience = async (
         .status(400)
         .json({ success: false, message: "Experience not found" } as IResponse);
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: `delete ${deleteExperience?.company} successfully`,
-      } as IResponse);
+    res.status(200).json({
+      success: true,
+      message: `delete ${deleteExperience?.company} successfully`,
+    } as IResponse);
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -185,13 +201,11 @@ const updateExperience = async (req: Request, res: Response): Promise<void> => {
       } as IResponse);
       return;
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Experience update successfully",
-        data: updateExperience,
-      } as IResponse);
+    res.status(200).json({
+      success: true,
+      message: "Experience update successfully",
+      data: updateExperience,
+    } as IResponse);
   } catch (error: any) {
     res.status(500).json({
       success: false,

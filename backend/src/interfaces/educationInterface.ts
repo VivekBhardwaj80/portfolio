@@ -9,12 +9,13 @@ export type EducationInstitute = "School" | "College" | "University";
 export interface IEducation {
   level: EducationLevel;
   institution: EducationInstitute;
+  institutionName:string
   fieldOfStudy?: string;
   degree?: string;
   startYear: Date;
   endYear?: Date;
   isCurrent?: boolean;
-  grade?: string;   
+  grade?: number;   
   description?: string;
   location?: string;
 }

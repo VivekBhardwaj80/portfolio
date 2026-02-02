@@ -22,7 +22,7 @@ const profileSchema = new Schema<IProfile>(
     socialLinks: {
       github: { type: String, trim: true },
       linkedIn: { type: String, trim: true },
-      twitter: { type: String, trim: true },
+      X: { type: String, trim: true },
       instagram: { type: String, trim: true },
       facebook: { type: String, trim: true },
     },

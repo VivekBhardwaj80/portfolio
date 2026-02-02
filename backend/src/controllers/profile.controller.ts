@@ -3,6 +3,9 @@ import { IResponse } from "../interfaces/responseInterface.js";
 import Profile from "../models/profile.model.js";
 import cloudinary from "../config/cloudinary.js";
 import validate from "email-validator";
+import Projects from "../models/project.model.js";
+import Skill from "../models/skill.model.js";
+import Experience from "../models/experience.model.js";
 
   const addProfile = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -17,7 +20,7 @@ import validate from "email-validator";
         resumeUrl,
         github,
         linkedIn,
-        twitter,
+        X,
         instagram,
         facebook,
       } = req.body;
@@ -65,7 +68,7 @@ import validate from "email-validator";
           github,
           linkedIn,
           instagram,
-          twitter,
+          X,
           facebook,
         },
         profileImage: profileImageUrl ? profileImageUrl : "",
@@ -86,6 +89,22 @@ import validate from "email-validator";
 
 const getProfile = async (req: Request, res: Response): Promise<void> => {
   try {
+    const recentProject = await Projects.find().sort({createdAt: -1}).limit(3)
+    if(!recentProject){
+      res.status(400).json({
+        success: false,
+        message: "projects not found",
+      } as IResponse);
+      return;
+    }
+    const skill = await Skill.find().sort({createdAt:-1})
+    if(!skill){
+      res.status(400).json({
+        success: false,
+        message: "Skill not found",
+      } as IResponse);
+      return;
+    }
     const existingProfile = await Profile.findOne();
     if (!existingProfile) {
       res.status(404).json({
@@ -94,9 +113,18 @@ const getProfile = async (req: Request, res: Response): Promise<void> => {
       } as IResponse);
       return;
     }
+    const experience = await Experience.find()
+    if(!experience){
+      res.status(404).json({
+        success: false,
+        message: "Experience not found",
+      } as IResponse);
+      return;
+    }
+    const lengthExperience = experience.length
     res.status(200).json({
       success: true,
-      data: existingProfile,
+      data: {existingProfile,recentProject,skill,lengthExperience},
     } as IResponse);
   } catch (error: any) {
     res.status(500).json({

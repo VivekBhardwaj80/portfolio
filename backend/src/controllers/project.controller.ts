@@ -5,8 +5,27 @@ import cloudinary from "../config/cloudinary.js";
 
 const addProject = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { title, description, techStack, githubLink, liveDemo } = req.body;
-    if (!title || !description || !techStack || !githubLink) {
+    const {
+      title,
+      description,
+      techStack,
+      status,
+      date,
+      name,
+      githubLink,
+      liveDemo,
+    } = req.body;
+    console.log(
+      title,
+      description,
+      techStack,
+      status,
+      date,
+      name,
+      githubLink,
+      liveDemo,
+    );
+    if (!title || !description || !techStack || !status || !githubLink) {
       res.status(400).json({
         success: false,
         message: "all field is required",
@@ -47,6 +66,9 @@ const addProject = async (req: Request, res: Response): Promise<void> => {
     }
     await Projects.create({
       title,
+      status,
+      date,
+      name,
       description,
       techStack,
       githubLink,
@@ -136,12 +158,10 @@ const deleteSingleProject = async (
         .status(400)
         .json({ success: false, message: "Project not found" } as IResponse);
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: `delete ${deleteProject?.title} successfully`,
-      } as IResponse);
+    res.status(200).json({
+      success: true,
+      message: `delete ${deleteProject?.title} successfully`,
+    } as IResponse);
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -182,11 +202,11 @@ const updateProject = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const updateData = req.body;
     if (req.file) {
-      const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
-      let result = await cloudinary.uploader.upload(base64Image,{
-        folder:"projects"
+      const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+      let result = await cloudinary.uploader.upload(base64Image, {
+        folder: "projects",
       });
-      updateData.imageUrl = result.secure_url
+      updateData.imageUrl = result.secure_url;
     }
     const updatedProject = await Projects.findByIdAndUpdate(id, updateData, {
       new: true,

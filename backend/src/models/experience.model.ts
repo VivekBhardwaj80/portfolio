@@ -10,6 +10,9 @@ const experienceSchema = new Schema<IExperience>(
     endDate: { type: Date },
     location: { type: String },
     isCurrent: { type: String, default: false },
+    logo:{type:String},
+    technologies:{type:[String]},
+    working:{type:String}
   },
   { timestamps: true },
 );

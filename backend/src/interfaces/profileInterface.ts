@@ -10,7 +10,7 @@ interface IProfile {
   socialLinks?: {
     github?: string;
     linkedIn?: string;
-    twitter?: string;
+    X?: string;
     instagram?: string;
     facebook?: string;
   };

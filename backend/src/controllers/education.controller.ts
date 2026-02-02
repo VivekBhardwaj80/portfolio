@@ -7,6 +7,7 @@ const addEducation = async (req: Request, res: Response): Promise<void> => {
     const {
       level,
       institution,
+      institutionName,
       fieldOfStudy,
       degree,
       startYear,
@@ -16,7 +17,7 @@ const addEducation = async (req: Request, res: Response): Promise<void> => {
       location,
       isCurrent,
     } = req.body;
-    if (!level || !institution || !startYear) {
+    if (!level || !institution || !institutionName || !startYear) {
       res.status(400).json({
         success: false,
         message: "Level, Institution, and Start Year are required",
@@ -49,6 +50,7 @@ const addEducation = async (req: Request, res: Response): Promise<void> => {
       description,
       location,
       isCurrent,
+      institutionName,
     });
     res.status(201).json({
       success: true,

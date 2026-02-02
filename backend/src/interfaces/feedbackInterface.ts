@@ -12,5 +12,5 @@ export type FeedbackType =
     company?:string,
     role?:string,
     message:string,
-    isRead:boolean,
+    isRead?:boolean,
   }

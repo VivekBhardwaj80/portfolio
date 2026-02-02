@@ -5,7 +5,10 @@ interface IExperience{
     endDate?:Date,
     description?:string,
     location?:string,
-    isCurrent?:boolean
+    isCurrent?:boolean,
+    logo?:string
+    technologies?:string[]
+    working?:string
 }
 
 export default IExperience
