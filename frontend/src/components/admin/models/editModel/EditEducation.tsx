@@ -1,47 +1,61 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { createEducation } from "../../../features/education/educationSlice";
-import type { AppDispatch } from "../../../app/store";
+import { editEducation, fetchEducation } from "../../../../features/education/educationSlice";
+import type { AppDispatch } from "../../../../app/store";
 
 type Props = {
   onClose: () => void;
+  education?: any;
 };
 
-const AddEducation = ({ onClose }: Props) => {
-  const [level, setLevel] = useState<string>("");
-  const [institution, setInstitution] = useState<string>("");
-  const [institutionName, setInstitutionName] = useState<string>("");
-  const [fieldOfStudy, setFieldOfStudy] = useState<string>("");
-  const [degree, setDegree] = useState<string>("");
-  const [startYear, setStartYear] = useState<string>("");
-  const [endYear, setEndYear] = useState<string>("");
-  const [grade, setGrade] = useState<number>();
-  const [location, setLocation] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [isCurrentStudy, setIsCurrentStudy] = useState<boolean>(true);
+const EditEducation = ({ onClose, education }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
-  const handleSave = () => {
-    if (!level || !institution || !startYear || !institutionName || (!isCurrentStudy && !endYear)) {
-      alert("Please fill all required fields");
+
+  const [level, setLevel] = useState<string>(education?.level || "");
+  const [institution, setInstitution] = useState<string>(
+    education?.institution || "",
+  );
+  const [institutionName, setInstitutionName] = useState<string>(
+    education?.institutionName || "",
+  );
+  const [fieldOfStudy, setFieldOfStudy] = useState<string>(
+    education?.fieldOfStudy || "",
+  );
+  const [degree, setDegree] = useState<string>(education?.degree || "");
+  const [startYear, setStartYear] = useState<string>(
+    education?.startYear || "",
+  );
+  const [endYear, setEndYear] = useState<string>(education?.endYear || "");
+  const [grade, setGrade] = useState<number>(education?.garde);
+  const [location, setLocation] = useState<string>(education?.location || "");
+  const [description, setDescription] = useState<string>(
+    education?.description || "",
+  );
+  const [isCurrentStudy, setIsCurrentStudy] = useState<boolean>(
+    education?.isCurrent ?? true,
+  );
+  const handleSave = async () => {
+    if (!education?._id) {
+      alert("No education record selected to edit");
       return;
     }
 
-    dispatch(
-      createEducation({
-        level,
-        institution,
-        institutionName,
-        fieldOfStudy,
-        degree,
-        startYear,
-        endYear,
-        grade,
-        location,
-        description,
-        isCurrent: isCurrentStudy,
-      }),
-    );
+    const payload = {
+      level,
+      institution,
+      institutionName,
+      fieldOfStudy,
+      degree,
+      startYear,
+      endYear,
+      grade,
+      location,
+      description,
+      isCurrent: isCurrentStudy,
+    };
+    await dispatch(editEducation({ id: education._id, data: payload }));
+    await dispatch(fetchEducation())
     onClose();
   };
   return (
@@ -90,22 +104,21 @@ const AddEducation = ({ onClose }: Props) => {
                 <option value="College">College</option>
                 <option value="University">University</option>
               </select>
-              
             </div>
           </div>
           <div className="flex flex-col gap-1">
-              <label htmlFor="institutionName" className="font-semibold">
-                Institution Name
-              </label>
-              <input
-                type="text"
-                name="institutionName"
-                id="institutionName"
-                value={institutionName}
-                onChange={(e) => setInstitutionName(e.target.value)}
-                className="border md:px-2 md:py-1 px-1 py-0.5 rounded border-gray-300 outline-gray-400"
-              />
-            </div>
+            <label htmlFor="institutionName" className="font-semibold">
+              Institution Name
+            </label>
+            <input
+              type="text"
+              name="institutionName"
+              id="institutionName"
+              value={institutionName}
+              onChange={(e) => setInstitutionName(e.target.value)}
+              className="border md:px-2 md:py-1 px-1 py-0.5 rounded border-gray-300 outline-gray-400"
+            />
+          </div>
           <div className="flex flex-col gap-1 mt-2">
             <label htmlFor="name" className="font-semibold">
               Field of study
@@ -224,6 +237,7 @@ const AddEducation = ({ onClose }: Props) => {
           >
             Cancel
           </button>
+
           <button
             className="px-3 py-1 bg-blue-600 text-white rounded cursor-pointer"
             onClick={handleSave}
@@ -236,4 +250,4 @@ const AddEducation = ({ onClose }: Props) => {
   );
 };
 
-export default AddEducation;
+export default EditEducation;

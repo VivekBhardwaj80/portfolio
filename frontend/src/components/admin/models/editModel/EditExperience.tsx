@@ -1,28 +1,46 @@
 import { useState, type ChangeEvent } from "react";
 import { IoClose } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../../app/store";
-import { createExperience } from "../../../features/exprience/exprienceSlice";
+import type { AppDispatch } from "../../../../app/store";
+import {
+  editExperience,
+  fetchExperience,
+} from "../../../../features/exprience/exprienceSlice";
 
 type Props = {
   onClose: () => void;
+  experience: any;
 };
 
-const AddExperience = ({ onClose }: Props) => {
-  const [companyName, setCompanyName] = useState<string>("");
-  const [companyRole, setCompanyRole] = useState<string>("");
-  const [startYear, setStartYear] = useState<string>("");
-  const [endYear, setEndYear] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [working, setWorking] = useState<string>("");
-  const [technologies, setTechnologies] = useState<string>("");
-  const [isCurrentWorking, setIsCurrentWorking] = useState<boolean>(false);
+const EditExperience = ({ onClose, experience }: Props) => {
+  const [companyName, setCompanyName] = useState<string>(
+    experience.company || "",
+  );
+  const [companyRole, setCompanyRole] = useState<string>(experience.role || "");
+  const [startYear, setStartYear] = useState<string>(
+    experience.startDate ? experience.startDate.slice(0, 10) : "",
+  );
+  const [endYear, setEndYear] = useState<string>(
+    experience.endDate ? experience.endDate.slice(0, 10) : "",
+  );
+  const [location, setLocation] = useState<string>(experience.location || "");
+  const [description, setDescription] = useState<string>(
+    experience.description || "",
+  );
+  const [working, setWorking] = useState<string>(experience.working || "");
+  const [technologies, setTechnologies] = useState<string>(
+    experience.technologies || "",
+  );
+  const [isCurrentWorking, setIsCurrentWorking] = useState<boolean>(
+    experience.isCurrent || false,
+  );
 
-  const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(experience.image || "");
+  const [preview, setPreview] = useState<string | null>(
+    experience.image || null,
+  );
+
   const dispatch = useDispatch<AppDispatch>();
-
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -30,30 +48,26 @@ const AddExperience = ({ onClose }: Props) => {
       setPreview(URL.createObjectURL(file));
     }
   };
-  const handleSave = () => {
-    if (!companyName || !companyRole || !startYear) {
-      alert("please fill all field");
+  const handleSave = async () => {
+    if (!experience?._id) {
+      alert("No experience selected to edit");
+      onClose()
       return;
     }
-    const formData = new FormData();
-    formData.append("company", companyName);
-    formData.append("role", companyRole);
-    formData.append("startDate", startYear);
-    if (endYear) formData.append("endDate", endYear);
-    if (description) formData.append("description", description);
-    if (location) formData.append("location", location);
-    if (working) formData.append("working", working);
-    if (technologies) {
-      const techArray = technologies
-        .split(",")
-        .map((t) => t.trim())
-        .filter((t) => t.length > 0);
-      techArray.forEach((t) => formData.append("technologies", t));
-    }
-    if (isCurrentWorking)
-      formData.append("isCurrent", String(isCurrentWorking));
-    if (image) formData.append("image", image);
-    dispatch(createExperience(formData));
+    const payload = {
+      company: companyName,
+      role: companyRole,
+      startDate: startYear,
+      endDate: endYear,
+      location,
+      working,
+      description,
+      isCurrent: isCurrentWorking,
+      technologies,
+      image,
+    };
+    await dispatch(editExperience({ id: experience._id, data: payload }));
+    await dispatch(fetchExperience());
     onClose();
   };
   return (
@@ -243,4 +257,4 @@ const AddExperience = ({ onClose }: Props) => {
   );
 };
 
-export default AddExperience;
+export default EditExperience;

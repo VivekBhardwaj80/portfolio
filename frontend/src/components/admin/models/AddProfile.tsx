@@ -2,21 +2,27 @@ import { useState, type ChangeEvent } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaInstagram } from "react-icons/fa6";
 import { FaFacebookF } from "react-icons/fa6";
-import { RiTwitterXFill } from "react-icons/ri";
+import { BsTwitterX } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../../app/store";
+import { createProfile } from "../../../features/profile/profileSlice";
+import { FaGithub } from "react-icons/fa";
 
 type Props = {
   onClose: () => void;
 };
 
 const AddProfile = ({ onClose }: Props) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [name, setName] = useState<string>("");
   const [headline, setHeadline] = useState<string>("");
   const [location, setLocation] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [instagram, setInstagram] = useState<string>("");
-  const [twitter, setTwitter] = useState<string>("");
+  const [github, setGithub] = useState<string>("");
+  const [X, setX] = useState<string>("");
   const [facebook, setFacebook] = useState<string>("");
   const [linkedIn, setLinkedIn] = useState<string>("");
   const [number, setNumber] = useState<number>();
@@ -29,6 +35,34 @@ const AddProfile = ({ onClose }: Props) => {
       setPreview(URL.createObjectURL(file));
     }
   };
+
+  const handleSave = () => {
+    if (!name || !headline || !bio) {
+      alert("please Enter all field");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("headline", headline);
+    formData.append("bio", bio);
+    if (email) formData.append("email", email);
+    if (number) formData.append("phone", number);
+    if (image) {
+      formData.append("profile", image);
+    }
+    formData.append(
+      "socialLinks",
+      JSON.stringify({
+        instagram,
+        X,
+        facebook,
+        github,
+        linkedIn,
+      }),
+    );
+    dispatch(createProfile(formData))
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center w-full mx-auto bg-black/70">
       <div className="bg-white w-full max-w-xl rounded-lg shadow-xl p-4 max-h-[95vh] overflow-hidden flex flex-col">
@@ -177,14 +211,14 @@ const AddProfile = ({ onClose }: Props) => {
           </div>
           <div className="flex items-center mt-2 gap-1 border md:px-2 md:py-1 px-1 py-0.5 rounded border-gray-300 outline-gray-400">
             <p className="md:px-2 md:py-1 px-1 py-0.5 rounded-full text-[#292F33]">
-              <RiTwitterXFill size={25} />
+              <BsTwitterX size={25} />
             </p>
             <input
               type="text"
-              name="twitter"
-              id="twitter"
-              value={twitter}
-              onChange={(e) => setTwitter(e.target.value)}
+              name="X"
+              id="X"
+              value={X}
+              onChange={(e) => setX(e.target.value)}
               className="w-full border border-gray-100 outline-gray-300 rounded"
             />
           </div>
@@ -201,6 +235,19 @@ const AddProfile = ({ onClose }: Props) => {
               className="w-full border border-gray-100 outline-gray-300 rounded"
             />
           </div>
+          <div className="flex items-center mt-2 gap-1 border md:px-2 md:py-1 px-1 py-0.5 rounded border-gray-300 outline-gray-400">
+            <p className="text-[#0077B5] md:px-2 md:py-1 px-1 py-0.5 rounded-full">
+              <FaGithub size={25} />
+            </p>
+            <input
+              type="text"
+              name="github"
+              id="github"
+              value={github}
+              onChange={(e) => setGithub(e.target.value)}
+              className="w-full border border-gray-100 outline-gray-300 rounded"
+            />
+          </div>
         </div>
         {/* Footer */}
         <div className="flex justify-end gap-3 mt-4 pt-4 border-t">
@@ -210,7 +257,10 @@ const AddProfile = ({ onClose }: Props) => {
           >
             Cancel
           </button>
-          <button className="px-3 py-1 bg-blue-600 text-white rounded cursor-pointer">
+          <button
+            className="px-3 py-1 bg-blue-600 text-white rounded cursor-pointer"
+            onClick={handleSave}
+          >
             Save
           </button>
         </div>
