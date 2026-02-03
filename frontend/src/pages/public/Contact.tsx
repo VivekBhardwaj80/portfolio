@@ -15,7 +15,7 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
             Get In{" "}
             <span
               style={{
-                background: "linear-gradient(to right, #06b6d4, #67e8f9  )",
+                background: "linear-gradient(to right, #26c6da, #1f88e5  )",
                 WebkitBackgroundClip: "text",
                 backgroundClip: "text",
                 color: "transparent",

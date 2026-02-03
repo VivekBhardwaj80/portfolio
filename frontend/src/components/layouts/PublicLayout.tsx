@@ -1,4 +1,3 @@
-import Footer from "../common/Footer";
 import PublicSidebar from "../common/PublicSidebar";
 import { Outlet } from "react-router-dom";
 
@@ -20,8 +19,6 @@ const PublicLayout = ({ darkMode, toggleDarkMode }: PublicLayoutProps) => {
         <main className="flex-1 p-5 md:px-10 md:py-6">
           <Outlet />
         </main>
-
-        <Footer />
       </div>
     </div>
   );

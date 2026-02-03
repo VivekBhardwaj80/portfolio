@@ -1,7 +1,7 @@
 import instagram from "../../assets/instaGram2Png.png";
 import X from "../../assets/XPng.png";
 import facebook from "../../assets/facebookPng.png";
-import github from "../../assets/githubPng.png";
+import github from "../../assets/github2.png";
 import linkedIn from "../../assets/linkendInPng.png";
 import resume from "../../assets/Vivek_MERN_RESUME.pdf";
 import { DownloadIcon, Mail } from "lucide-react";

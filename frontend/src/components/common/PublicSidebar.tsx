@@ -108,7 +108,7 @@ const PublicSidebar = ({ darkMode, toggleDarkMode }: PublicSidebarProps) => {
               onClick={() => scrollToSection(id)}
               className={`flex px-11 py-2 rounded-md items-center gap-2 transition-all duration-200 cursor-pointer ${
                 activeSection === id
-                  ? "bg-cyan-200 text-black  shadow-lg"
+                  ? "bg-cyan-200 text-black/90  shadow-lg"
                   : "hover:bg-cyan-100"
               }`}
             >

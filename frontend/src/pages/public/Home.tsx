@@ -7,6 +7,7 @@ import Skills from "./Skills";
 import { IoIosMenu } from "react-icons/io";
 import PublicSidebar from "../../components/common/PublicSidebar";
 import { AnimatePresence, motion } from "motion/react";
+import Footer from "../../components/common/Footer";
 
 type PublicRoutesProps = {
   darkMode: boolean;
@@ -68,6 +69,9 @@ const Home = ({ darkMode, toggleDarkMode }: PublicRoutesProps) => {
         </section>
         <section id="contact" className="min-h-screen">
           <Contact darkMode={darkMode}/>
+        </section>
+        <section id="footer">
+          <Footer darkMode={darkMode}/>
         </section>
       </div>
     </div>
