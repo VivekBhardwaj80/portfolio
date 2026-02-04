@@ -32,7 +32,7 @@ const AddProject = ({ onClose }: Props) => {
   };
 
   const handleSave = () => {
-    if (!title || !description || !status || !techStack || !name) {
+    if (!title || !description || !status || !techStack || !github || !name) {
       alert("please fill all field");
       return;
     }
@@ -56,7 +56,7 @@ const AddProject = ({ onClose }: Props) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center w-full mx-auto bg-black/70">
+    <div className="fixed inset-0 z-50 flex items-center justify-center w-full mx-auto bg-black/70 text-black">
       <div className="bg-white w-full max-w-xl rounded-lg shadow-xl p-4 max-h-[95vh] overflow-hidden flex flex-col">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Add Profile</p>

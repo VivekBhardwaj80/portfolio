@@ -10,7 +10,7 @@ const projectsSchema = new Schema<IProjectModel>(
     techStack: { type: [String], required: true },
     githubLink: { type: String },
     liveDemo: { type: String },
-    imageUrl: { type: String },
+    imageUrl: { type: String, required:true },
     date: { type: String },
   },
   { timestamps: true },

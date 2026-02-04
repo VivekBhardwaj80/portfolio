@@ -15,16 +15,6 @@ const addProject = async (req: Request, res: Response): Promise<void> => {
       githubLink,
       liveDemo,
     } = req.body;
-    console.log(
-      title,
-      description,
-      techStack,
-      status,
-      date,
-      name,
-      githubLink,
-      liveDemo,
-    );
     if (!title || !description || !techStack || !status || !githubLink) {
       res.status(400).json({
         success: false,
@@ -32,6 +22,7 @@ const addProject = async (req: Request, res: Response): Promise<void> => {
       } as IResponse);
       return;
     }
+    const techStackArray = typeof techStack === 'string' ? techStack.split(',') : techStack;
 
     let image: string | undefined;
     if (!req.file) {
@@ -70,7 +61,7 @@ const addProject = async (req: Request, res: Response): Promise<void> => {
       date,
       name,
       description,
-      techStack,
+      techStack:techStackArray,
       githubLink,
       imageUrl: image ?? "",
       liveDemo,

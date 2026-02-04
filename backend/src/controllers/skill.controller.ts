@@ -6,6 +6,7 @@ import cloudinary from "../config/cloudinary.js";
 const addSkill = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, level, category, isFeatured } = req.body;
+    console.log( name, level, category, isFeatured)
     if (!name || !level || !category) {
       res.status(400).json({
         success: false,

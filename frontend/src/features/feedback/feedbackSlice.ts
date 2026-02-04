@@ -9,7 +9,7 @@ import {
 } from "./feedbackAPI";
 
 interface IFeedback {
-  _id: string;
+  _id?: string;
   message: string;
   feedbackType: string;
   name?: string;

@@ -16,7 +16,7 @@ const profileSchema = new Schema<IProfile>(
     bio: { type: String, trim: true, required: true },
     location: { type: String, trim: true },
     email: { type: String, trim: true },
-    phone: { type: Number },
+    phone: { type: String },
     website: { type: String, trim: true },
     resumeUrl: { type: String, trim: true },
     socialLinks: {

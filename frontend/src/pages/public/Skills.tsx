@@ -1,36 +1,33 @@
-import react from "../../assets/react.png";
-import socket from "../../assets/Socket.io.png";
-import tailwindCSS from "../../assets/tailwindcss.png";
-import typescript from "../../assets/typescript.png";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../app/store";
+import { useEffect, useState } from "react";
+import { fetchSkill } from "../../features/skill/skillSlice";
 
 type PublicRoutesProps = {
   darkMode: boolean;
 };
 
 const Skills = ({ darkMode }: PublicRoutesProps) => {
-  const skills = [
+  const [loadSkill, setLoadSkill] = useState<number>(6);
+  const dispatch = useDispatch<AppDispatch>();
+  const { skillList, loading } = useSelector(
+    (state: RootState) => state.skill,
+  );
+  useEffect(() => {
+    dispatch(fetchSkill());
+  }, [dispatch]);
+
+  const colors = [
     {
-      name: "react",
-      icon: react,
-      level: 95,
       color: "from-cyan-500 to-blue-500",
     },
     {
-      name: "socket",
-      icon: socket,
-      level: 85,
       color: "from-[#136163] to-[#1a98a6]",
     },
     {
-      name: "tailwindCSS",
-      icon: tailwindCSS,
-      level: 90,
       color: "from-cyan-500 to-cyan-600",
     },
     {
-      name: "typescript",
-      icon: typescript,
-      level: 80,
       color: "from-blue-500 to-cyan-500",
     },
   ];
@@ -56,17 +53,24 @@ const Skills = ({ darkMode }: PublicRoutesProps) => {
             className="text-lg max-w-2xl mx-auto leading-relaxed"
             style={{ color: darkMode ? "#d1d5db" : "#4b5563" }}
           >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt
-            excepturi aut enim voluptates iste! Maxime voluptatum provident enim
-            nam sequi.
+            A curated set of technologies and tools I use to build modern,
+            scalable applications. This includes frontend and backend
+            development, APIs, databases, cloud platforms, and supporting
+            tools—focused on performance, clean architecture, and real-world
+            problem solving.
           </p>
         </div>
+        {loading && (
+          <p className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 text-transparent bg-linear-to-r from-cyan-400 to-blue-600 bg-clip-text">
+            Loading...
+          </p>
+        )}
         <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           data-aos="fade-up"
           data-aos-delay="200"
         >
-          {skills.map((skill, index) => (
+          {skillList.slice(0, loadSkill).map((skill, index) => (
             <div
               key={index}
               className="p-4"
@@ -131,7 +135,9 @@ const Skills = ({ darkMode }: PublicRoutesProps) => {
                   }}
                 >
                   <div
-                    className={`h-full rounded-full bg-linear-to-r ${skill.color} transition-all duration-1000 ease-in-out`}
+                    className={`h-full rounded-full bg-linear-to-r ${
+                      colors[index % colors.length].color
+                    } transition-all duration-1000 ease-in-out`}
                     style={{ width: `${skill.level}%` }}
                   ></div>
                 </div>
@@ -149,6 +155,18 @@ const Skills = ({ darkMode }: PublicRoutesProps) => {
               </div>
             </div>
           ))}
+        </div>
+        <div className="text-center mt-10">
+          {loadSkill < skillList.length && (
+            <button
+              onClick={() => setLoadSkill(skillList.length)}
+              className={`w-full sm:w-auto border-2 border-cyan-600 inline-flex items-center justify-center py-3 px-6 sm:px-8 hover:shadow-[0_0_40px_rgba(0,255,255,0.7)] cursor-pointer rounded-full text-base lg:text-lg font-semibold transition-all duration-300 transform ${darkMode ? "text-white bg-cyan-500/10" : "text-gray-800 bg-cyan-500/90"}`}
+              data-aos="zoom-in"
+              data-aos-delay="300"
+            >
+              <span>Load More</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

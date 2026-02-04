@@ -1,5 +1,5 @@
 import { IoAdd } from "react-icons/io5";
-import user from "../../assets/user-profile.png";
+import user from "../../assets/user.png";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
@@ -9,9 +9,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
 import { fetchProfile } from "../../features/profile/profileSlice";
+import { Edit } from "lucide-react";
+import EditProfile from "../../components/admin/models/editModel/EditProfile";
 
 const Profile = () => {
-  const [showAddProfile, setShowAddProfile] = useState(false);
+  const [showAddProfile, setShowAddProfile] = useState<boolean>(false);
+  const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
+  const [selectedProfile, setSelectedProfile] = useState<any>(null);
   const dispatch = useDispatch<AppDispatch>();
   const {
     profileList,
@@ -19,7 +23,7 @@ const Profile = () => {
     skill,
     error,
     loading,
-    experienceLength,
+    experience
   } = useSelector((state: RootState) => state.profile);
   useEffect(() => {
     dispatch(fetchProfile());
@@ -28,6 +32,9 @@ const Profile = () => {
     <>
       {showAddProfile && (
         <AddProfile onClose={() => setShowAddProfile(false)} />
+      )}
+      {showEditProfile && (
+        <EditProfile onClose={() => setShowEditProfile(false)} profile={selectedProfile} />
       )}
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-end ">
@@ -39,7 +46,7 @@ const Profile = () => {
               Proof of your abilities.
             </p>
           </div>
-          <div>
+          <div className="flex gap-2">
             <button
               className="flex flex-row items-center rounded-md text-white md:px-3 md:py-1 font-semibold md:text-xl px-2 py-1 gap-1 bg-[#c12df7] border-white border cursor-pointer"
               onClick={() => setShowAddProfile(true)}
@@ -47,6 +54,15 @@ const Profile = () => {
               <IoAdd size={17} />
               New
             </button>
+            {profileList.map((profile,index)=>(
+            <button 
+            key={index}
+              className="flex flex-row items-center rounded-md text-white md:px-3 md:py-1 font-semibold md:text-xl px-2 py-1 gap-1 bg-[#c12df7] border-white border cursor-pointer"
+              onClick={() => {setShowEditProfile(true);setSelectedProfile(profile)}}
+            >
+              <Edit size={17} />
+              Edit
+            </button>))}
           </div>
         </div>
         {loading && <p className="text-gray-500">Loading...</p>}
@@ -134,7 +150,7 @@ const Profile = () => {
                   project
                 </p>
                 <p className="h-fit md:px-5 md:py-2 px-3 py-1 bg-[#c12df7] shadow-lg border-white border text-center lg:text-2xl md:text-xl font-semibold text-white rounded-xl">
-                  {experienceLength} Experience
+                  {experience} Experience
                 </p>
                 <p className="h-fit md:px-5 md:py-2 px-3 py-1 bg-[#c12df7] shadow-lg border-white border text-center lg:text-2xl md:text-xl font-semibold text-white rounded-xl">
                   Viewer

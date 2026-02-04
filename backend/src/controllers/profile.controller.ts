@@ -1,11 +1,12 @@
-import { Response, Request } from "express";
-import { IResponse } from "../interfaces/responseInterface.js";
-import Profile from "../models/profile.model.js";
-import cloudinary from "../config/cloudinary.js";
-import validate from "email-validator";
-import Projects from "../models/project.model.js";
-import Skill from "../models/skill.model.js";
-import Experience from "../models/experience.model.js";
+  import { Response, Request } from "express";
+  import { IResponse } from "../interfaces/responseInterface.js";
+  import Profile from "../models/profile.model.js";
+  import cloudinary from "../config/cloudinary.js";
+  import validate from "email-validator";
+  import Projects from "../models/project.model.js";
+  import Skill from "../models/skill.model.js";
+  import Experience from "../models/experience.model.js";
+  import Education from "../models/education.model.js";
 
   const addProfile = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -18,12 +19,13 @@ import Experience from "../models/experience.model.js";
         phone,
         website,
         resumeUrl,
-        github,
-        linkedIn,
-        X,
-        instagram,
-        facebook,
+        socialLinks,
       } = req.body;
+      const parsedSocialLinks =
+        typeof socialLinks === "string" ? JSON.parse(socialLinks) : socialLinks;
+
+      const { github, linkedIn, instagram, X, facebook } =
+        parsedSocialLinks || {};
       if (!name || !headline || !bio) {
         res.status(400).json({
           success: false,
@@ -31,6 +33,7 @@ import Experience from "../models/experience.model.js";
         } as IResponse);
         return;
       }
+
       const existingProfile = await Profile.findOne();
       if (existingProfile) {
         res.status(400).json({
@@ -39,8 +42,8 @@ import Experience from "../models/experience.model.js";
         } as IResponse);
         return;
       }
-      if(email && !validate.validate(email)){
-          res.status(400).json({
+      if (email && !validate.validate(email)) {
+        res.status(400).json({
           success: false,
           message: "Invalid Email format",
         } as IResponse);
@@ -87,140 +90,134 @@ import Experience from "../models/experience.model.js";
     }
   };
 
-const getProfile = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const recentProject = await Projects.find().sort({createdAt: -1}).limit(3)
-    if(!recentProject){
-      res.status(400).json({
-        success: false,
-        message: "projects not found",
+  const getProfile = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const recentProject = await Projects.find()
+        .sort({ createdAt: -1 })
+        .limit(3);
+      if (!recentProject) {
+        res.status(400).json({
+          success: false,
+          message: "projects not found",
+        } as IResponse);
+        return;
+      }
+      const skill = await Skill.find().sort({ createdAt: -1 });
+      if (!skill) {
+        res.status(400).json({
+          success: false,
+          message: "Skill not found",
+        } as IResponse);
+        return;
+      }
+      const existingProfile = await Profile.findOne();
+      if (!existingProfile) {
+        res.status(404).json({
+          success: false,
+          message: "Profile not found",
+        } as IResponse);
+        return;
+      }
+      const experience = await Experience.find();
+      if (!experience) {
+        res.status(404).json({
+          success: false,
+          message: "Experience not found",
+        } as IResponse);
+        return;
+      }
+      const education = await Education.find().sort({ createdAt: -1 }); 
+      res.status(200).json({
+        success: true,
+        data: { existingProfile, recentProject, skill, experience, education },
       } as IResponse);
-      return;
-    }
-    const skill = await Skill.find().sort({createdAt:-1})
-    if(!skill){
-      res.status(400).json({
+    } catch (error: any) {
+      res.status(500).json({
         success: false,
-        message: "Skill not found",
+        message: "get Profile internal error",
+        error: error.message,
       } as IResponse);
-      return;
     }
-    const existingProfile = await Profile.findOne();
-    if (!existingProfile) {
-      res.status(404).json({
-        success: false,
-        message: "Profile not found",
-      } as IResponse);
-      return;
-    }
-    const experience = await Experience.find()
-    if(!experience){
-      res.status(404).json({
-        success: false,
-        message: "Experience not found",
-      } as IResponse);
-      return;
-    }
-    const lengthExperience = experience.length
-    res.status(200).json({
-      success: true,
-      data: {existingProfile,recentProject,skill,lengthExperience},
-    } as IResponse);
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "get Profile internal error",
-      error: error.message,
-    } as IResponse);
-  }
-};
+  };
 
+  const deleteProfile = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const existingProfile = await Profile.findOne();
+      if (!existingProfile) {
+        res
+          .status(404)
+          .json({ success: false, message: "Profile not found" } as IResponse);
+        return;
+      }
 
-const deleteProfile = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  try {
-    const existingProfile = await Profile.findOne()
-    if (!existingProfile) {
-      res
-        .status(404)
-        .json({ success: false, message: "Profile not found" } as IResponse);
-        return
-    }
-
-    await Profile.deleteOne(existingProfile._id);
-    res
-      .status(200)
-      .json({
+      await Profile.deleteOne(existingProfile._id);
+      res.status(200).json({
         success: true,
         message: `profile deleted successfully`,
       } as IResponse);
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "deleteProfile internal error",
-      error: error.message,
-    } as IResponse);
-  }
-};
-
-
-const updateProfile = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const updateData = req.body;
-    const existingProfile = await Profile.findOne();
-    if (!existingProfile) {
-      res.status(404).json({
+    } catch (error: any) {
+      res.status(500).json({
         success: false,
-        message: "Profile not found",
+        message: "deleteProfile internal error",
+        error: error.message,
       } as IResponse);
-      return;
     }
-    if(updateData.email && !validate.validate(updateData.email)){
-       res.status(400).json({
-        success: false,
-        message: "Wrong email formate",
-      } as IResponse);
-      return; 
-    }
+  };
 
-    if(req.file){
-        const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`
-        const result = await cloudinary.uploader.upload(base64Image,{folder:"Profile"})
-        updateData.profileImage = result.secure_url
-    }
-    
-    const updateProfile = await Profile.findByIdAndUpdate(
+  const updateProfile = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const updateData = req.body;
+      const existingProfile = await Profile.findOne();
+      if (!existingProfile) {
+        res.status(404).json({
+          success: false,
+          message: "Profile not found",
+        } as IResponse);
+        return;
+      }
+      if (updateData.email && !validate.validate(updateData.email)) {
+        res.status(400).json({
+          success: false,
+          message: "Wrong email formate",
+        } as IResponse);
+        return;
+      }
+      if (updateData.socialLinks && typeof updateData.socialLinks === "string") {
+        updateData.socialLinks = JSON.parse(updateData.socialLinks);
+      }
+
+      if (req.file) {
+        const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+        const result = await cloudinary.uploader.upload(base64Image, {
+          folder: "Profile",
+        });
+        updateData.profileImage = result.secure_url;
+      }
+
+      const updateProfile = await Profile.findByIdAndUpdate(
         existingProfile._id,
-      updateData,
-      { new: true },
-    );
-    if (!updateProfile) {
-      res.status(400).json({
-        success: false,
-        message: "updateProfile error",
-      } as IResponse);
-      return;
-    }
-    res
-      .status(200)
-      .json({
+        updateData,
+        { new: true },
+      );
+      if (!updateProfile) {
+        res.status(400).json({
+          success: false,
+          message: "updateProfile error",
+        } as IResponse);
+        return;
+      }
+      res.status(200).json({
         success: true,
         message: "Profile update successfully",
         data: updateProfile,
       } as IResponse);
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: "updateProfile internal error",
-      error: error.message,
-    } as IResponse);
-  }
-};
-export {
-  addProfile,
-  getProfile,
-  deleteProfile,
-  updateProfile,
-};
+    } catch (error: any) {
+      console.log("error.message", error.message);
+      res.status(500).json({
+        success: false,
+        message: "updateProfile internal error",
+        error: error.message,
+      } as IResponse);
+    }
+  };
+  export { addProfile, getProfile, deleteProfile, updateProfile };

@@ -6,13 +6,24 @@ import {
   FaLinkedin,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 
 type PublicLayoutProps = {
   darkMode: boolean;
 };
 
+
 const Footer = ({ darkMode }: PublicLayoutProps) => {
   const currentYear = new Date().getFullYear();
+  const { profileList } = useSelector((state: RootState) => state.profile);
+    const profile = profileList?.[0];
+    const parsedSocialLinks: Partial<Record<"instagram"|"X"|"facebook"|"github"|"linkedIn", string>> = 
+  profile?.socialLinks 
+    ? typeof profile.socialLinks === "string"
+      ? JSON.parse(profile.socialLinks)
+      : profile.socialLinks
+    : {};
   return (
     <div className="border-t">
       <div className="container mx-auto px-4 py-8">
@@ -38,34 +49,35 @@ const Footer = ({ darkMode }: PublicLayoutProps) => {
           </div>
           <div className="flex gap-4">
             <a
-              href="#"
-              className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-all hover:bg-linear-to-r from-cyan-500 to-blue-500 hover:text-black dark:hover:text-white bg-[#374151] dark:bg-[#f3f4f6] text-[#ffffff] dark:text-black"
-            >
-              <FaLinkedin />
-            </a>
-            <a
-              href="#"
-              className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-all hover:bg-linear-to-r from-cyan-500 to-blue-500 hover-text-white hover:text-black dark:hover:text-white bg-[#374151] dark:bg-[#f3f4f6] text-[#ffffff] dark:text-black"
-            >
-              <FaGithub />
-            </a>
-            <a
-              href="#"
+              href={parsedSocialLinks.instagram}
               className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-all hover:bg-linear-to-r from-cyan-500 to-blue-500 hover:text-black dark:hover:text-white bg-[#374151] dark:bg-[#f3f4f6] text-[#ffffff] dark:text-black"
             >
               <FaInstagram />
             </a>
             <a
-              href="#"
+              href={parsedSocialLinks.X}
+              target="_blank"
               className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-all hover:bg-linear-to-r from-cyan-500 to-blue-500 hover:text-black dark:hover:text-white bg-[#374151] dark:bg-[#f3f4f6] text-[#ffffff] dark:text-black"
             >
               <FaXTwitter />
             </a>
             <a
-              href="#"
+              href={parsedSocialLinks.facebook}
               className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-all hover:bg-linear-to-r from-cyan-500 to-blue-500 hover:text-black dark:hover:text-white bg-[#374151] dark:bg-[#f3f4f6] text-[#ffffff] dark:text-black"
             >
               <FaFacebook />
+            </a>
+            <a
+              href={parsedSocialLinks.github}
+              className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-all hover:bg-linear-to-r from-cyan-500 to-blue-500 hover-text-white hover:text-black dark:hover:text-white bg-[#374151] dark:bg-[#f3f4f6] text-[#ffffff] dark:text-black"
+            >
+              <FaGithub />
+            </a>
+            <a
+              href={parsedSocialLinks.linkedIn}
+              className="w-10 h-10 rounded-full flex items-center justify-center hover:scale-110 transition-all hover:bg-linear-to-r from-cyan-500 to-blue-500 hover:text-black dark:hover:text-white bg-[#374151] dark:bg-[#f3f4f6] text-[#ffffff] dark:text-black"
+            >
+              <FaLinkedin />
             </a>
           </div>
           <div className="text-center md:text-right">

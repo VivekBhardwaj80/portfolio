@@ -27,7 +27,6 @@ const Education = () => {
   useEffect(() => {
     dispatch(fetchEducation());
   }, [dispatch]);
-  console.log(showEdit);
   return (
     <>
       {showAdd && <AddEducation onClose={() => setShowAdd(false)} />}

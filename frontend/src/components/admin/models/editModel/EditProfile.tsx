@@ -5,29 +5,30 @@ import { FaFacebookF } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../../app/store";
-import { createProfile } from "../../../features/profile/profileSlice";
 import { FaGithub } from "react-icons/fa";
+import type { AppDispatch } from "../../../../app/store";
+import { editProfile } from "../../../../features/profile/profileSlice";
 
 type Props = {
   onClose: () => void;
+  profile:any;
 };
-
-const AddProfile = ({ onClose }: Props) => {
+const EditProfile = ({ onClose,profile }: Props) => {
+  console.log("profile",profile)
   const dispatch = useDispatch<AppDispatch>();
-  const [name, setName] = useState<string>("");
-  const [headline, setHeadline] = useState<string>("");
-  const [location, setLocation] = useState<string>("");
-  const [bio, setBio] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [instagram, setInstagram] = useState<string>("");
-  const [github, setGithub] = useState<string>("");
-  const [X, setX] = useState<string>("");
-  const [facebook, setFacebook] = useState<string>("");
-  const [linkedIn, setLinkedIn] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
+  const [name, setName] = useState<string>(profile.name || "");
+  const [headline, setHeadline] = useState<string>(profile.headline || "");
+  const [location, setLocation] = useState<string>(profile.location || "");
+  const [bio, setBio] = useState<string>(profile.bio || "");
+  const [email, setEmail] = useState<string>(profile.email || "");
+  const [instagram, setInstagram] = useState<string>(profile.instagram || "");
+  const [github, setGithub] = useState<string>(profile.github || "");
+  const [X, setX] = useState<string>(profile.X || "");
+  const [facebook, setFacebook] = useState<string>(profile.facebook || "");
+  const [linkedIn, setLinkedIn] = useState<string>(profile.linkedIn || "");
+  const [number, setNumber] = useState<number>(profile.number || '');
   const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(profile.profile);
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -46,7 +47,7 @@ const AddProfile = ({ onClose }: Props) => {
     formData.append("headline", headline);
     formData.append("bio", bio);
     if (email) formData.append("email", email);
-    if (phone) formData.append("phone", phone);
+    if (number) formData.append("phone", number);
     if (image) {
       formData.append("image", image);
     }
@@ -60,7 +61,7 @@ const AddProfile = ({ onClose }: Props) => {
         linkedIn,
       }),
     );
-    dispatch(createProfile(formData))
+    dispatch(editProfile(formData))
   };
 
   return (
@@ -114,7 +115,7 @@ const AddProfile = ({ onClose }: Props) => {
               />
             </div>
             <div className="flex flex-col gap-0.5">
-              <label htmlFor="headline" className="font-semibold text-sm">
+              <label htmlFor="name" className="font-semibold text-sm">
                 Headline
               </label>
               <input
@@ -130,7 +131,7 @@ const AddProfile = ({ onClose }: Props) => {
         </div>
         <div className="overflow-y-auto max-h-[calc(90vh-120px)] pr-2">
           <div className="flex flex-col gap-1">
-            <label htmlFor="bio" className="font-semibold">
+            <label htmlFor="name" className="font-semibold">
               Bio
             </label>
             <textarea
@@ -143,7 +144,7 @@ const AddProfile = ({ onClose }: Props) => {
             />
           </div>
           <div className="flex flex-col gap-1 mt-2">
-            <label htmlFor="location" className="font-semibold">
+            <label htmlFor="name" className="font-semibold">
               Location
             </label>
             <input
@@ -157,7 +158,7 @@ const AddProfile = ({ onClose }: Props) => {
           </div>
           <div className="grid md:grid-cols-2 grid-cols-1 mt-2 md:gap-6 gap-2">
             <div className="flex flex-col gap-1">
-              <label htmlFor="email" className="font-semibold">
+              <label htmlFor="startYear" className="font-semibold">
                 Email
               </label>
               <input
@@ -170,15 +171,15 @@ const AddProfile = ({ onClose }: Props) => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="phone" className="font-semibold">
+              <label htmlFor="startYear" className="font-semibold">
                 Phone
               </label>
               <input
                 type="number"
-                name="phone"
-                id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                name="number"
+                id="number"
+                value={number}
+                onChange={(e) => setNumber(Number(e.target.value))}
                 className="border md:px-2 md:py-1 px-1 py-0.5 rounded border-gray-300 outline-gray-400"
               />
             </div>
@@ -269,4 +270,4 @@ const AddProfile = ({ onClose }: Props) => {
   );
 };
 
-export default AddProfile;
+export default EditProfile;

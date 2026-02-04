@@ -6,6 +6,8 @@ import { CgMail } from "react-icons/cg";
 import { useEffect, useState } from "react";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { motion } from "motion/react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 
 type PublicSidebarProps = {
   darkMode: boolean;
@@ -13,8 +15,11 @@ type PublicSidebarProps = {
 };
 
 const PublicSidebar = ({ darkMode, toggleDarkMode }: PublicSidebarProps) => {
+  const { profileList } = useSelector((state: RootState) => state.profile);
+  const profile = profileList?.[0]
+  const profileImage = profile?.profileImage;
   const [activeSection, setActiveSection] = useState("home");
-  
+
   const lightColors = {
     sidebarBg: "bg-linear-to-br from-cyan-200 to-cyan-500",
     textPrimary: "text-gray-900",
@@ -75,6 +80,7 @@ const PublicSidebar = ({ darkMode, toggleDarkMode }: PublicSidebarProps) => {
   ];
 
   return (
+    
     <aside
       className={`flex flex-col h-full px-4 py-8 overflow-y-auto 
     ${
@@ -94,7 +100,7 @@ const PublicSidebar = ({ darkMode, toggleDarkMode }: PublicSidebarProps) => {
         <div className="flex flex-col items-center mt-6 -mx-2">
           <img
             className="object-cover w-24 h-24 mx-2 rounded-full"
-            src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+            src={typeof profileImage === "string" ? profileImage : undefined}
             alt="avatar"
           />
         </div>
@@ -135,4 +141,4 @@ const PublicSidebar = ({ darkMode, toggleDarkMode }: PublicSidebarProps) => {
   );
 };
 
-export default PublicSidebar
+export default PublicSidebar;

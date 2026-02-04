@@ -9,7 +9,7 @@ type Props = {
 };
 
 const AddSkill = ({ onClose }: Props) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
   const [name, setName] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [level, setLevel] = useState<string>("");
@@ -23,25 +23,25 @@ const AddSkill = ({ onClose }: Props) => {
       setPreview(URL.createObjectURL(file));
     }
   };
-  const handleSave =()=> {
-    if(!name || !level || !category){
-      alert("please fill all the field")
-      return
+  const handleSave = () => {
+    if (!name || !level || !category) {
+      alert("please fill all the field");
+      return;
     }
-    const formData = new FormData()
-    formData.append("name",name)
-    formData.append("category",category)
-    formData.append("level",level)
-    if(image){
-      formData.append("image",image)
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("category", category);
+    formData.append("level", level);
+    if (image) {
+      formData.append("image", image);
     }
-    formData.append("isFeatured",String(isFeatured))
-    dispatch(createSkill(formData))
-    onClose()
-  }
+    formData.append("isFeatured", String(isFeatured));
+    dispatch(createSkill(formData));
+    onClose();
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center w-full mx-auto bg-black/70">
+    <div className="fixed inset-0 z-50 flex items-center justify-center w-full mx-auto bg-black/70 text-black">
       <div className="bg-white w-full max-w-xl rounded-lg shadow-xl p-4 max-h-[95vh] overflow-hidden flex flex-col">
         <div className="flex items-center justify-between">
           <p className="text-lg font-semibold">Add Profile</p>
@@ -103,14 +103,18 @@ const AddSkill = ({ onClose }: Props) => {
                 onChange={(e) => setCategory(e.target.value)}
                 className="border md:px-2 md:py-1 px-1 py-0.5 rounded border-gray-300 outline-gray-400"
               >
-                <option value="frontend" defaultValue={"frontend"}>Frontend</option>
+                <option value="frontend" defaultValue={"frontend"}>
+                  Frontend
+                </option>
                 <option value="backend">Backend</option>
                 <option value="language">Language</option>
                 <option value="tool">Tool</option>
+                <option value="platform">Platform</option>
                 <option value="authentication">Authentication</option>
                 <option value="api">API's</option>
                 <option value="realtime">Realtime</option>
                 <option value="devops">Devops</option>
+                <option value="database">Database</option>
                 <option value="animation">Animation</option>
               </select>
             </div>
@@ -122,37 +126,34 @@ const AddSkill = ({ onClose }: Props) => {
               <label htmlFor="name" className="font-semibold">
                 Skill level
               </label>
-              <select
+              <input
+                type="range"
                 name="level"
                 id="level"
                 value={level}
                 onChange={(e) => setLevel(e.target.value)}
-                className="border md:px-2 md:py-1 px-1 py-0.5 rounded border-gray-300 outline-gray-400"
-              >
-                <option value="beginner" defaultValue={"beginner"}>Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="expert">Expert</option>
-              </select>
+                className="border md:py-1 py-0.5 rounded border-gray-300 outline-gray-400"
+              />
+                
             </div>
             <div className="flex flex-col gap-1">
               <label htmlFor="startYear" className="font-semibold">
                 Featured
               </label>
               <div
-            className="mt-2 flex gap-2 items-center cursor-pointer"
-            onClick={() => setIsFeatured((prev) => !prev)}
-          >
-            <div
-              className={`md:w-14 md:h-6 w-12 h-5 rounded-full transition-colors duration-300 relative ${isFeatured ? "bg-green-500" : "bg-gray-200"}`}
-            >
-              <div
-                className={`bg-white absolute md:w-7 md:h-6 w-5 h-5 border border-gray-400 rounded-full transition-transform duration-300 ${isFeatured ? "translate-x-7" : "translate-x-0"}`}
-              />
+                className="mt-2 flex gap-2 items-center cursor-pointer"
+                onClick={() => setIsFeatured((prev) => !prev)}
+              >
+                <div
+                  className={`md:w-14 md:h-6 w-12 h-5 rounded-full transition-colors duration-300 relative ${isFeatured ? "bg-green-500" : "bg-gray-200"}`}
+                >
+                  <div
+                    className={`bg-white absolute md:w-7 md:h-6 w-5 h-5 border border-gray-400 rounded-full transition-transform duration-300 ${isFeatured ? "translate-x-7" : "translate-x-0"}`}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-            </div>
-          </div>
-          
         </div>
         {/* Footer */}
         <div className="flex justify-end gap-3 mt-4 pt-4 border-t">
@@ -162,8 +163,10 @@ const AddSkill = ({ onClose }: Props) => {
           >
             Cancel
           </button>
-          <button className="px-3 py-1 bg-blue-600 text-white rounded cursor-pointer" 
-          onClick={handleSave}>
+          <button
+            className="px-3 py-1 bg-blue-600 text-white rounded cursor-pointer"
+            onClick={handleSave}
+          >
             Save
           </button>
         </div>

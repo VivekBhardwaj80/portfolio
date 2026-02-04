@@ -7,7 +7,7 @@ const skillSchema = new Schema<ISkillModel>(
     level: {
       type: String,
       required: true,
-      enum: ["beginner", "intermediate", "expert"],
+      trim: true,
     },
     category: {
       type: String,
@@ -17,10 +17,12 @@ const skillSchema = new Schema<ISkillModel>(
         "backend",
         "language",
         "tool",
+        "platform",
         "authentication",
         "api",
         "realtime",
         "devops",
+        "database",
         "animation",
       ],
     },

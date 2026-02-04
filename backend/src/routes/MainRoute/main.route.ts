@@ -10,6 +10,7 @@ import seoRouter from '../seo.route.js'
 import isAuth from '../../middlewares/isAuth.js'
 import verifyAdmin from '../../controllers/verifyAdmin.controller.js'
 import dahRouter from '../dashboard.route.js'
+import contactRouter from '../contact.route.js'
 
 const mainRouter = Router()
 mainRouter.use('/admin',userRouter)
@@ -22,6 +23,7 @@ mainRouter.use('/educations',educationRouter)
 mainRouter.use('/feedback',feedbackRouter)
 mainRouter.use('/profile',profileRouter)
 mainRouter.use('/seo',seoRouter)
+mainRouter.use('/contact',contactRouter)
 
 export default mainRouter
 

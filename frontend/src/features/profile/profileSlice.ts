@@ -29,8 +29,9 @@ interface IProfile {
 interface IProfileState {
   profileList: IProfile[];
   recentProjects: any[];
-  experienceLength:number
-  skill:any[]
+  experience: any[];
+  education: any[];
+  skill: any[];
   loading: boolean;
   error: string | null;
 }
@@ -38,8 +39,9 @@ interface IProfileState {
 const initialState: IProfileState = {
   profileList: [],
   recentProjects: [],
-  skill:[],
-  experienceLength:0,
+  skill: [],
+  experience: [],
+  education: [],
   loading: false,
   error: null,
 };
@@ -69,7 +71,7 @@ export const createProfile = createAsyncThunk(
 
 export const editProfile = createAsyncThunk(
   "profile/update",
-  async (profileData: IProfile, { rejectWithValue }) => {
+  async (profileData: FormData, { rejectWithValue }) => {
     try {
       const res = await updateProfile(profileData);
       return res.data;
@@ -103,10 +105,13 @@ const profileSlice = createSlice({
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.loading = false;
-        state.profileList = action.payload.data.existingProfile ? [action.payload.data.existingProfile] : []
-        state.recentProjects = action.payload.data.recentProject || []
-        state.skill = action.payload.data.skill || []
-        state.experienceLength = action.payload.experienceLength || 0
+        const data = action.payload.data;
+
+        state.profileList = data.existingProfile ? [data.existingProfile] : [];
+        state.recentProjects = data.recentProject || [];
+        state.skill = data.skill || [];
+        state.experience = data.experience || [];
+        state.education = data.education || [];
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;

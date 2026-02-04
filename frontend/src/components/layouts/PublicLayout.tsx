@@ -1,3 +1,4 @@
+import Feedback from "../../pages/public/Feedback";
 import PublicSidebar from "../common/PublicSidebar";
 import { Outlet } from "react-router-dom";
 
@@ -20,6 +21,8 @@ const PublicLayout = ({ darkMode, toggleDarkMode }: PublicLayoutProps) => {
           <Outlet />
         </main>
       </div>
+      {/* Feedback */}
+      <Feedback darkMode={darkMode} />
     </div>
   );
 };

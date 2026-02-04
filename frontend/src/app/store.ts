@@ -5,6 +5,7 @@ import skillReducer from '../features/skill/skillSlice'
 import profileReducer from '../features/profile/profileSlice'
 import projectReducer from '../features/projects/projectSlice'
 import dashboardReducer from '../features/dashboard/dashboardSlice'
+import contactReducer from '../features/contact/contactSlice'
 
 export const store = configureStore({
     reducer:{
@@ -13,7 +14,8 @@ export const store = configureStore({
         skill:skillReducer,
         profile:profileReducer,
         project:projectReducer,
-        dashboard:dashboardReducer
+        dashboard:dashboardReducer,
+        contact:contactReducer,
     }
 })
 

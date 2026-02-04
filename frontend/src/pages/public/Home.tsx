@@ -15,6 +15,7 @@ type PublicRoutesProps = {
 };
 const Home = ({ darkMode, toggleDarkMode }: PublicRoutesProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
 
   return (
     <div className="relative">

@@ -1,9 +1,49 @@
+import { useState } from "react";
 import contact from "../../assets/contact-us.png";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../app/store";
+import { createContact } from "../../features/contact/contactSlice";
+import { toast } from "react-toastify";
 
 type PublicRoutesProps = {
   darkMode: boolean;
 };
 const Contact = ({ darkMode }: PublicRoutesProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const handleContactSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!firstName || !email || !message) {
+      alert("please fill all the field");
+      return;
+    }
+    try {
+      const formDate = new FormData();
+      formDate.append("firstName", firstName);
+      formDate.append("message", message);
+      formDate.append("email", email);
+      if (lastName) formDate.append("lastName", lastName);
+      if (phone) formDate.append("phone", phone);
+      const res = await dispatch(
+        createContact({ firstName, lastName, email, phone, message }),
+      ).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,6 +83,7 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
             />
           </div>
           <form
+            onSubmit={handleContactSave}
             style={{
               background: darkMode
                 ? "linear-gradient(to right, #1f2937, #111827)"
@@ -50,40 +91,85 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
               borderColor: darkMode ? "#374151" : "e5e7eb",
             }}
             className="rounded-xl p-4 sm:p-5 md:p-6 lg:p-8 border shadow-lg order-1 lg:order-2"
-            data-aos='fade-left'
+            data-aos="fade-left"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
               {/* firstName */}
-              <input type="text" placeholder="First name..." style={{backgroundColor:darkMode ? '#374151' : '#faede3',
-                borderColor : darkMode ? '#4b5563' : 'd1d5db',
-                color:darkMode ?'white' : '#1f2937'
-              }}
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all" required />
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First name..."
+                style={{
+                  backgroundColor: darkMode ? "#374151" : "#faede3",
+                  borderColor: darkMode ? "#4b5563" : "d1d5db",
+                  color: darkMode ? "white" : "#1f2937",
+                }}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                required
+              />
               {/* lastName */}
-              <input type="text" placeholder="Last name..." style={{backgroundColor:darkMode ? '#374151' : '#faede3',
-                borderColor : darkMode ? '#4b5563' : 'd1d5db',
-                color:darkMode ?'white' : '#1f2937'
-              }}
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all" required />
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last name..."
+                style={{
+                  backgroundColor: darkMode ? "#374151" : "#faede3",
+                  borderColor: darkMode ? "#4b5563" : "d1d5db",
+                  color: darkMode ? "white" : "#1f2937",
+                }}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+              />
               {/* email */}
-              <input type="email" placeholder="Email Address" style={{backgroundColor:darkMode ? '#374151' : '#faede3',
-                borderColor : darkMode ? '#4b5563' : 'd1d5db',
-                color:darkMode ?'white' : '#1f2937'
-              }}
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all" required />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email Address"
+                style={{
+                  backgroundColor: darkMode ? "#374151" : "#faede3",
+                  borderColor: darkMode ? "#4b5563" : "d1d5db",
+                  color: darkMode ? "white" : "#1f2937",
+                }}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                required
+              />
               {/* telephone */}
-              <input type="tel" placeholder="Phone Number" style={{backgroundColor:darkMode ? '#374151' : '#faede3',
-                borderColor : darkMode ? '#4b5563' : 'd1d5db',
-                color:darkMode ?'white' : '#1f2937'
-              }}
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all" required />
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Phone Number"
+                style={{
+                  backgroundColor: darkMode ? "#374151" : "#faede3",
+                  borderColor: darkMode ? "#4b5563" : "d1d5db",
+                  color: darkMode ? "white" : "#1f2937",
+                }}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+              />
               {/* message */}
-              <textarea  placeholder="Your Message" style={{backgroundColor:darkMode ? '#374151' : '#faede3',
-                borderColor : darkMode ? '#4b5563' : 'd1d5db',
-                color:darkMode ?'white' : '#1f2937'
-              }}
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all resize-none" required />
-              <button type="submit" style={{background:'linear-gradient(to right, #06b6d4, #67e8f9)'}} className="w-full py-2 sm:py-3 text-white font-semibold rounded-lg text-sm sm:text-base hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]  cursor-pointer transition-all">Send Message</button>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Your Message"
+                style={{
+                  backgroundColor: darkMode ? "#374151" : "#faede3",
+                  borderColor: darkMode ? "#4b5563" : "d1d5db",
+                  color: darkMode ? "white" : "#1f2937",
+                }}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all resize-none"
+                required
+              />
+              <button
+                type="submit"
+                style={{
+                  background: "linear-gradient(to right, #06b6d4, #67e8f9)",
+                }}
+                className="w-full py-2 sm:py-3 text-white font-semibold rounded-lg text-sm sm:text-base hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]  cursor-pointer transition-all"
+              >
+                Send Message
+              </button>
             </div>
           </form>
         </div>
