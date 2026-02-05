@@ -22,15 +22,15 @@ const api = axios.create({
 console.log("✅ Axios configured with baseURL:", api.defaults.baseURL);
 
 // Request interceptor for debugging
-api.interceptors.request.use((config) => {
-    console.log("📤 Making request to:", config.baseURL + config.url);
-    console.log("📤 Request method:", config.method);
-    console.log("📤 Request data:", config.data);
-    return config;
-}, (error) => {
-    console.error("❌ Request error:", error);
-    return Promise.reject(error);
-});
+// api.interceptors.request.use((config) => {
+//     console.log("📤 Making request to:", config.baseURL + config.url);
+//     console.log("📤 Request method:", config.method);
+//     console.log("📤 Request data:", config.data);
+//     return config;
+// }, (error) => {
+//     console.error("❌ Request error:", error);
+//     return Promise.reject(error);
+// });
 
 // Response interceptor for debugging
 api.interceptors.response.use((response) => {

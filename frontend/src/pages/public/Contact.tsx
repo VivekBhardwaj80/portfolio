@@ -309,7 +309,7 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
         </div>
         
         {/* Debug Info */}
-        {process.env.NODE_ENV === 'development' && (
+        {/* {process.env.NODE_ENV === 'development' && ( */}
           <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <h3 className="font-bold text-yellow-800">Debug Info:</h3>
             <p className="text-sm text-yellow-700">
@@ -319,7 +319,7 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
               Status: {loading ? "Loading..." : error ? `Error: ${error}` : "Ready"}
             </p>
           </div>
-        )}
+        {/* )} */}
         
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-5 sm:gap-7 md:gap-9 items-center mb-12">
           <div
@@ -457,7 +457,7 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
                 </button>
                 
                 {/* Debug console button (only in development) */}
-                {process.env.NODE_ENV === 'development' && (
+                {/* {process.env.NODE_ENV === 'development' && ( */}
                   <button
                     type="button"
                     onClick={() => {
@@ -475,7 +475,7 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
                   >
                     Debug Console Log
                   </button>
-                )}
+                {/* )} */}
               </div>
             </div>
             
