@@ -18,7 +18,6 @@ const transport = nodemailer.createTransport({
     rejectUnauthorized: false
   }
 })
-
 export const sendEmail = async({firstName,email,message}:emailProps)=>{
   let mailOptions = {
     from:`"Portfolio Contact" <${process.env.ADMIN_EMAIL}>`,

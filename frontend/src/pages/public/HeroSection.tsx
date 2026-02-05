@@ -30,7 +30,6 @@ const HeroSection = ({ darkMode }: PublicRoutesProps) => {
         ? JSON.parse(profile.socialLinks)
         : profile.socialLinks
       : {};
-      console.log("parsedSocialLinks",parsedSocialLinks)
 
   const socialLink: { key: SocialKey; icon: string; alt: string }[] = [
     { key: "instagram", icon: instagram, alt: "instagram" },

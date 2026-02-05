@@ -24,12 +24,13 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
     try {
       const contactData = {
         firstName,
-        lastName,
+        lastName:lastName || "",
         email,
-        phone,
+        phone: phone || "",
         message,
       };
       const res = await dispatch(createContact(contactData)).unwrap();
+      
       if (res.success) {
         toast.success(res.message);
         setFirstName("");
