@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL:https://port-backend-fab0.onrender.com,
+    baseURL:import.meta.env.VITE_BACKEND_URL,
     withCredentials:true,
 });
 

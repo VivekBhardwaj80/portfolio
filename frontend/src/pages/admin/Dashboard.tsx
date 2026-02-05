@@ -20,11 +20,6 @@ import type { AppDispatch, RootState } from "../../app/store";
 import { useEffect } from "react";
 import { fetchDashboard } from "../../features/dashboard/dashboardSlice";
 
-interface IPIEDATA {
-  name: string;
-  value: number;
-  percentage?: number;
-}
 
 interface IData {
   name: string;

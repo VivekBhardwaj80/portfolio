@@ -26,7 +26,7 @@ const EditProfile = ({ onClose,profile }: Props) => {
   const [X, setX] = useState<string>(profile.X || "");
   const [facebook, setFacebook] = useState<string>(profile.facebook || "");
   const [linkedIn, setLinkedIn] = useState<string>(profile.linkedIn || "");
-  const [number, setNumber] = useState<number>(profile.number || '');
+  const [number, setNumber] = useState<number>(profile.number ?? 0);
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(profile.profile);
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ const EditProfile = ({ onClose,profile }: Props) => {
     formData.append("headline", headline);
     formData.append("bio", bio);
     if (email) formData.append("email", email);
-    if (number) formData.append("phone", number);
+    if (number) formData.append("phone", number.toString());
     if (image) {
       formData.append("image", image);
     }

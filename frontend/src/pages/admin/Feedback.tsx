@@ -4,7 +4,7 @@ import { FaCheck } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 
 const Feedback = () => {
-  const [isRead, setIsRead] = useState(false);
+  const [isRead,] = useState(false);
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between items-end ">

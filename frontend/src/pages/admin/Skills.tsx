@@ -92,7 +92,7 @@ const Skills = () => {
                     </button>
                     <button
                       className="px-2 py-1 rounded-lg bg-red-500 lg:cursor-pointer shadow-lg"
-                      onClick={() => handleDelete(skill._id)}
+                      onClick={() => handleDelete(skill._id!)}
                     >
                       Delete
                     </button>
