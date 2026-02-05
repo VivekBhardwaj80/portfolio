@@ -1,6 +1,6 @@
 import api from "../../services/axios";
 
-const PROFILE_BASE_URL = "/profile";
+const PROFILE_BASE_URL = "/api/v1/profile";
 
 export const getProfile = async () => {
   const data = await api.get(PROFILE_BASE_URL);

@@ -1,6 +1,6 @@
 import api from "../../services/axios";
 
-const SKILL_BASE_URL = 'skills'
+const SKILL_BASE_URL = '/api/v1/skills'
 
 export const addSkill = async(skill:any)=>{
     const data = await api.post(SKILL_BASE_URL,skill)

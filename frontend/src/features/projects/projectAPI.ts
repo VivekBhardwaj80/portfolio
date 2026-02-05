@@ -1,6 +1,6 @@
 import api from "../../services/axios";
 
-const PROJECT_BASE_URL = '/projects'
+const PROJECT_BASE_URL = '/api/v1/projects'
 
 export const getProject = async()=>{
     const data = await api.get(PROJECT_BASE_URL)

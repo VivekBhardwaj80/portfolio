@@ -1,7 +1,7 @@
 import api from "../../services/axios";
 
 
-const EDUCATION_BASE_URL = '/educations';
+const EDUCATION_BASE_URL = '/api/v1/educations';
 
 export const getAllEducation = async()=>{
     const {data} = await api.get(EDUCATION_BASE_URL)

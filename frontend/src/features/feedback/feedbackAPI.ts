@@ -1,6 +1,6 @@
 import api from "../../services/axios";
 
-const FEEDBACK_BASE_URL = "feedback";
+const FEEDBACK_BASE_URL = "/api/v1/feedback";
 
 export const addFeedback = async (feedbackData: any) => {
   const data = await api.post(FEEDBACK_BASE_URL, feedbackData);

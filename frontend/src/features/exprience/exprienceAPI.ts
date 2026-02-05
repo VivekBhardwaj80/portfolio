@@ -1,6 +1,6 @@
 import api from "../../services/axios";
 
-const EXPERIENCE_BASE_URL = '/experiences'
+const EXPERIENCE_BASE_URL = '/api/v1/experiences'
 
 export const getAllExperience = async()=>{
     const {data} = await api.get(EXPERIENCE_BASE_URL)
