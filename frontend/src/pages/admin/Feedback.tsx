@@ -4,7 +4,7 @@ import { FaCheck } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 
 const Feedback = () => {
-  const [isRead,] = useState(false);
+  const [isRead] = useState(false);
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between items-end ">
@@ -42,10 +42,12 @@ const Feedback = () => {
             Message: <span className="font-normal">message</span>
           </p>
           <div className="flex items-center justify-between">
-            {isRead && <div className="flex items-center gap-2">
-              <FaCheck className="p-1 w-5 h-5 border border-white rounded-full" />{" "}
-              Read
-            </div>}
+            {isRead && (
+              <div className="flex items-center gap-2">
+                <FaCheck className="p-1 w-5 h-5 border border-white rounded-full" />{" "}
+                Read
+              </div>
+            )}
             <div className="flex items-center gap-2 mt-1">
               <p className="md:px-2 md:py-1 px-1 py-0.5 md:text-[15px] text-sm md:rounded-lg rounded-md  lg:cursor-pointer shadow-lg h-fit bg-[#c207dfa8]">
                 Mark as Unread

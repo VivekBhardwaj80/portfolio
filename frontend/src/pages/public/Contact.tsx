@@ -22,15 +22,14 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
       return;
     }
     try {
-      const formDate = new FormData();
-      formDate.append("firstName", firstName);
-      formDate.append("message", message);
-      formDate.append("email", email);
-      if (lastName) formDate.append("lastName", lastName);
-      if (phone) formDate.append("phone", phone);
-      const res = await dispatch(
-        createContact({ firstName, lastName, email, phone, message }),
-      ).unwrap();
+      const contactData = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        message,
+      };
+      const res = await dispatch(createContact(contactData)).unwrap();
       if (res.success) {
         toast.success(res.message);
         setFirstName("");
@@ -40,7 +39,11 @@ const Contact = ({ darkMode }: PublicRoutesProps) => {
         setMessage("");
       }
     } catch (error: any) {
-      toast.error(error.message);
+      if (error.response?.data?.message) {
+        toast.error(error.response?.data?.message);
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 
