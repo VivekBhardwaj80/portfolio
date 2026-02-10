@@ -17,7 +17,7 @@
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cors({
-    origin:"https://portfolio-site-oya4.onrender.com",
+    origin:"https://infobyme.onrender.com",
     credentials:true
   }));
   app.use(cookieParser());
