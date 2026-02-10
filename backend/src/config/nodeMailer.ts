@@ -1,33 +1,47 @@
-import nodemailer from 'nodemailer'
-import {config} from 'dotenv'
-config()
+import nodemailer from "nodemailer";
+import { config } from "dotenv";
 
-type emailProps = {
-  firstName:string,
-  email:string,
-  message:string
-}
+config();
 
-const transport = nodemailer.createTransport({
-  service:'gmail',
-  auth:{
-    user:process.env.ADMIN_EMAIL,
-    pass:process.env.EMAIL_PASS,
+type EmailProps = {
+  firstName: string;
+  email: string;
+  message: string;
+};
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.ADMIN_EMAIL,
+    pass: process.env.EMAIL_PASS,
   },
-  tls: {
-    rejectUnauthorized: false
+});
+
+export const sendEmail = async ({ firstName, email, message }: EmailProps) => {
+  try {
+    if (!firstName || !email || !message) {
+      throw new Error("All fields are required");
+    }
+
+    const info = await transporter.sendMail({
+      from: `"Portfolio Contact" <${process.env.ADMIN_EMAIL}>`,
+      to: process.env.ADMIN_EMAIL,
+      replyTo: email,
+      subject: `New message from ${firstName}`,
+      text: `
+Name: ${firstName}
+Email: ${email}
+
+Message:
+${message}
+      `,
+    });
+
+    return info;
+  } catch (error) {
+    console.error("Email error:", error);
+    throw new Error("Email sending failed");
   }
-})
-export const sendEmail = async({firstName,email,message}:emailProps)=>{
-  let mailOptions = {
-    from:`"Portfolio Contact" <${process.env.ADMIN_EMAIL}>`,
-    to:process.env.ADMIN_EMAIL,
-    replyTo:email,
-    subject:"new Contact from message",
-    text:`Name: ${firstName}
-    Email:${email}
-    
-    Message:${message}`
-  }
-return transport.sendMail(mailOptions)
-}
+};

@@ -147,6 +147,7 @@ const FeedbackForm = ({ darkMode }: PublicLayoutProps) => {
                 className=" border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all rounded px-2 py-1 mt-1"
               />
             </div>
+            {feedbackType === "Recruitment" && (<div>
             <div className="flex flex-col">
               <label
                 htmlFor="name"
@@ -191,6 +192,7 @@ const FeedbackForm = ({ darkMode }: PublicLayoutProps) => {
                 className=" border focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all rounded px-2 py-1 mt-1"
               />
             </div>
+            </div>)}
             <div className="flex flex-col">
               <label
                 htmlFor="message"
