@@ -12,7 +12,7 @@
   "author": "Vivek Sharma",
   "license": "ISC",
   "description": "Backend API for personal portfolio website",
-  "dependencies": {
+  "dependencies": { 
     "@types/nodemailer": "^7.0.9",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.9.0",

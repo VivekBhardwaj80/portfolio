@@ -33,7 +33,7 @@ const isAuth = async (
         .json({ success: false, message: "Unauthorized User" } as IResponse);
       return;
     }
-   (req as any).admin = admin;
+    (req as any).admin = admin;
     next();
   } catch (error: any) {
     res.status(500).json({
